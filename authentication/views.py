@@ -29,11 +29,15 @@ class UserSendOtpAPI(APIView):
         output_status = False
         message = "failed"
         mobile = request.data.get("mobile", "")
+        forget_pass = request.data.get("forget", False)
         user_exist = False
         if mobile and phone_number_validator(mobile):
             user = User.objects.filter(mobile=mobile, mobile_verified=True)
-            if user.exists():
+            if user.exists() and forget_pass:
                 user = user.first()
+                user_exist = True
+                user.send_mobile_otp() 
+            elif user.exists():
                 user_exist = True
             else:
                 user = User.objects.create(
@@ -41,7 +45,7 @@ class UserSendOtpAPI(APIView):
                     username = mobile,
                     referal_code = get_random_string(length=10, allowed_chars=RANDOM_STRING_CHARS)
                 )
-            user.send_mobile_otp()    
+                user.send_mobile_otp()    
             res_status = HTTP_200_OK
             output_status = True
             message = "Success"   
@@ -109,7 +113,7 @@ class ResendOtpVIew(APIView):
                 output_status = True
                 message = "Success"
             else:
-                message = "Mobile is not veerified"
+                message = "Mobile is not verified"
         else:
             message = "Mobile is invalid"
         context = {
@@ -142,6 +146,8 @@ class SetPasswordView(APIView):
     
 class LoginView(APIView):
 
+    permission_classes = ()
+
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -171,4 +177,57 @@ class LoginView(APIView):
                 "data": data
             }
         return Response(context, status=res_status, content_type="application/json")
+
+class UsernameView(APIView):
+
+    def get(self, request):
+        res_status = HTTP_400_BAD_REQUEST
+        output_status = False
+        message = "failed"
+        username = request.GET.get("username")
+        if username:
+            obj = User.objects.filter(username = username)
+            if not obj.exists():
+                res_status = HTTP_200_OK
+                output_status = True
+                message = "Success"
+            else:
+                message = "username already exists"
+        else:
+            message = "username is required"
+
+        context = {
+                "status": output_status,
+                "detail": message,
+            }
+        return Response(context, status=res_status, content_type="application/json")
+
+
+
+    def post(self, request):
+        res_status = HTTP_400_BAD_REQUEST
+        output_status = False
+        message = "failed"
+        username = request.data.get("username")
+        if username:
+            if username != request.user.username:
+                try: 
+                    request.user.username = username
+                    request.user.save()
+                    res_status = HTTP_200_OK
+                    output_status = True
+                    message = "Success"
+                except Exception as e:
+                    message = str(e)
+            else:
+                message = "Existing username should not be equal to username"
+        else:
+            message = 'Username is required'
+        context = {
+                "status": output_status,
+                "detail": message,
+            }
+        return Response(context, status=res_status, content_type="application/json")
+
+
 

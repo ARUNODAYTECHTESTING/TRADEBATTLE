@@ -6,7 +6,8 @@ from .views import (
     VerifyOtpView,
     LoginView,
     SetPasswordView,
-    LoginView
+    LoginView,
+    UsernameView,
 )
 
 urlpatterns = [
@@ -16,4 +17,6 @@ urlpatterns = [
     path("login/", LoginView.as_view()),
     path("set-password/", SetPasswordView.as_view()),
     path("login/", LoginView.as_view()),
+    path("username/", UsernameView.as_view())
+    
 ]

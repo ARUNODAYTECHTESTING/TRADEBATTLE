@@ -6,6 +6,15 @@ import random
 
 
 # Create your models here.
+
+
+
+class ExperienceLevel(models.Model):
+    name = models.CharField(max_length=50)
+    point = models.IntegerField()
+    image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
+
+
 class User(AbstractUser):
     GENDER = (
         (1, "MALE"), 
@@ -15,7 +24,7 @@ class User(AbstractUser):
     full_name = models.CharField(max_length=500, null=True, blank=True)
     dob = models.DateTimeField(null=True, blank=True)
     mobile = models.CharField(max_length=15, null=True, blank=True, unique=True)
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True, unique=True)
     gender = models.SmallIntegerField(choices=GENDER, null=True, blank=True)
     otp_code = models.CharField(max_length=10, null=True, blank=True)
     otp_created_at = models.DateTimeField(default=timezone.now)
@@ -26,6 +35,9 @@ class User(AbstractUser):
     pan_number = models.CharField(max_length=10, null=True, blank=True, unique=True)
     pan_verified = models.BooleanField(default=False)
     referal_code = models.CharField(max_length=20, unique=True)
+    username = models.CharField(max_length= 50, null=True, blank=True, unique=True)
+    experience_point = models.IntegerField(default=0)
+    ex_level = models.ForeignKey(ExperienceLevel, on_delete=models.DO_NOTHING, null= True, blank=True)
 
     def send_mobile_otp(self):
         if settings.DEBUG:
