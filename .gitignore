@@ -5,6 +5,7 @@ links.txt
 upload/
 sandbox/
 static/
+staticfiles/
 dump.rdb
 
 # common

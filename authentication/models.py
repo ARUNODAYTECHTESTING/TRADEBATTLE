@@ -14,6 +14,9 @@ class ExperienceLevel(models.Model):
     point = models.IntegerField()
     image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class User(AbstractUser):
     GENDER = (
