@@ -132,6 +132,7 @@ class SetPasswordView(APIView):
         if password and password_validator(password):
             user = request.user
             user.set_password(password)
+            user.save()
             res_status = HTTP_200_OK
             output_status = True
             message = "Success"
