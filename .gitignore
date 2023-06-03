@@ -137,3 +137,5 @@ ENV/
 
 # Visual Studio Code
 .vscode/
+
+json-collection/*
