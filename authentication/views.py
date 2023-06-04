@@ -40,11 +40,13 @@ class UserSendOtpAPI(APIView):
             elif user.exists():
                 user_exist = True
             else:
-                user = User.objects.create(
+
+                user, _ = User.objects.get_or_create(
                     mobile = mobile,
                     username = mobile,
-                    referal_code = get_random_string(length=10, allowed_chars=RANDOM_STRING_CHARS)
                 )
+                user.referal_code = get_random_string(length=10, allowed_chars=RANDOM_STRING_CHARS)
+                user.save()
                 user.send_mobile_otp()    
             res_status = HTTP_200_OK
             output_status = True
