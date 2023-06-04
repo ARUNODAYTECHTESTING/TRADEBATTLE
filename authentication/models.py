@@ -37,7 +37,7 @@ class User(AbstractUser):
     adhaar_verified = models.BooleanField(default=False)
     pan_number = models.CharField(max_length=10, null=True, blank=True, unique=True)
     pan_verified = models.BooleanField(default=False)
-    referal_code = models.CharField(max_length=20, unique=True)
+    referal_code = models.CharField(max_length=20, unique=True, null=True, blank=True )
     username = models.CharField(max_length= 50, null=True, blank=True, unique=True,db_index=True)
     experience_point = models.IntegerField(default=0)
     ex_level = models.ForeignKey(ExperienceLevel, on_delete=models.DO_NOTHING, null= True, blank=True)
