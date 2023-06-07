@@ -154,7 +154,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "core.authentication.ForkedAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
@@ -195,3 +195,12 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_FILE_OVERWRITE = False
+
+
+CACHES = {
+    'default': {
+        "BACKEND": "django_redis.cache.RedisCache",
+        'LOCATION': config("REDIS_URL",""),
+        'TIMEOUT': 4,
+    }
+}

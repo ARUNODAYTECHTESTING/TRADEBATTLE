@@ -20,7 +20,7 @@ class ReferalView(APIView):
         message = "failed"
         referal_code = request.data.get("referal_code")
         if referal_code:
-            other_user = User.objects.filter(referal_code=referal_code)
+            other_user = User.objects.filter(username=referal_code)
             if other_user.exists():
                 other_user = other_user.first()
                 try:
