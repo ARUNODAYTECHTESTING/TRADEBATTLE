@@ -14,7 +14,6 @@ from .models import (
     Level,
     Course,
     Lecture,
-    Quiz,
     UserEnrolment,
     Watchlist
 )
@@ -124,10 +123,11 @@ class QuizView(APIView):
 
         obj = Watchlist.objects.filter(video_id = video_id)
         if obj.exists():
-            obj.update(completed = True)
-            obj = Quiz.objects.filter(lecture_id = video_id)
-            if obj.exists():
-                output_data = list(obj.values())[0]
+            #TODO
+            # obj.update(completed = True)
+            # obj = Q.objects.filter(lecture_id = video_id)
+            # if obj.exists():
+            #     output_data = list(obj.values())[0]
             res_status = HTTP_200_OK
             output_status = True
             message = "Success"

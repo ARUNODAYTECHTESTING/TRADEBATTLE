@@ -4,7 +4,7 @@ from .models import (
     Course,
     Lecture,
     Watchlist,
-    Quiz
+    # Quiz
 )
 # Register your models here.
 
@@ -12,4 +12,4 @@ admin.site.register(Course)
 admin.site.register(Level)
 admin.site.register(Lecture)
 admin.site.register(Watchlist)
-admin.site.register(Quiz)
+# admin.site.register(Quiz)

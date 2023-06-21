@@ -39,7 +39,7 @@ show:
 git_command=git pull origin stable
 
 restart:
-	sudo systemctl restart nginx && sudo service supervisor start 
+	sudo systemctl restart nginx && supervisorctl restart all
 
 dev:
 	ssh -i tradebattle.pem ubuntu@43.204.50.66

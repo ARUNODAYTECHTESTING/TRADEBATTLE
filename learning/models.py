@@ -1,5 +1,6 @@
 from django.db import models
 from authentication.models import User
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 
@@ -39,16 +40,27 @@ class Lecture(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    
+class Pages(models.Model):
+    description = RichTextField()
+    page_no = models.IntegerField(default=1)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, db_index=True)
 
-class Quiz(models.Model):
-    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
-    question = models.CharField(max_length=400)
-    option1 = models.CharField(max_length=400)
-    option2 = models.CharField(max_length=400, default="")
-    option3 = models.CharField(max_length=400,default="")
-    option4 = models.CharField(max_length=400, default="")
-    correctans = models.CharField(max_length=400, default="")
-    description = models.TextField(null=True, blank= True)
+    class Meta:
+        unique_together = ("page_no", "lecture")
+
+
+class Question(models.Model):
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, db_index=True)
+    text = RichTextField()
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text =  RichTextField()
+    correct = models.BooleanField(default=False)
+    description = RichTextField(null=True,blank=True)
+
+
 
 
 class UserEnrolment(models.Model):
@@ -69,6 +81,7 @@ class Watchlist(models.Model):
     course = models.ForeignKey(UserEnrolment, on_delete=models.CASCADE ,db_index= True)
     video = models.ForeignKey(Lecture, on_delete=models.CASCADE, db_index= True)
     completed = models.BooleanField(default=False)
+    quiz_atempt = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.video.views += 1
@@ -79,7 +92,13 @@ class Watchlist(models.Model):
         unique_together = ("course", "video")
 
 
+class BookMark(models.Model):
+    
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE , db_index=True)
 
+    class Meta:
+        unique_together = ("page", "user")
 
 
     
