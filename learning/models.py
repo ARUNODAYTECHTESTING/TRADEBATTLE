@@ -82,6 +82,7 @@ class Watchlist(models.Model):
     video = models.ForeignKey(Lecture, on_delete=models.CASCADE, db_index= True)
     completed = models.BooleanField(default=False)
     quiz_atempt = models.IntegerField(default=0)
+    book_page = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.video.views += 1

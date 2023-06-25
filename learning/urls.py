@@ -6,7 +6,9 @@ from .views import (
     LectureView,
     MyEnrollment,
     OpenLecture,
-    QuizView
+    QuizView,
+    BookView,
+    BookMarkView,
 )
 
 urlpatterns = [
@@ -14,6 +16,8 @@ urlpatterns = [
     path("course/", CourseView.as_view()),
     path("lecture/", LectureView.as_view()),
     path("enrollment/", MyEnrollment.as_view()),
-    path("open-lecture/<video_id>/", OpenLecture.as_view()),
-    path("quiz/<video_id>/", QuizView.as_view()),
+    path("open-lecture/<int:video_id>/", OpenLecture.as_view()),
+    path("quiz/<int:video_id>/", QuizView.as_view()),
+    path("book/<int:video_id>/", BookView.as_view()),
+    path("bookmark/", BookMarkView.as_view()),
 ]
