@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "authentication",
     "learning",
     "wallet"
+    "news",
+
 ]
 
 MIDDLEWARE = [
@@ -190,6 +192,9 @@ AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", "")
 AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", "")
 AWS_LOCATION = "static"
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
@@ -197,6 +202,7 @@ STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_FILE_OVERWRITE = False
 
+<<<<<<< HEAD
 
 CACHES = {
     'default': {
@@ -205,3 +211,10 @@ CACHES = {
         'TIMEOUT': 4,
     }
 }
+=======
+# s3 public media settings
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
+AWS_DEFAULT_ACL = 'public-read'
+>>>>>>> 51c8f05c8824bec209aa81e0a52935b5f2c7a5a0
