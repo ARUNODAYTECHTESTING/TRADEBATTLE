@@ -9,6 +9,7 @@ from .models import (
     UserEnrolment,
     BookMark,
     Pages,
+    Category
 )
 
 # Register your models here.
@@ -21,3 +22,4 @@ admin.site.register(Question)
 admin.site.register(Answer)
 admin.site.register(UserEnrolment)
 admin.site.register(Pages)
+admin.site.register(Category)

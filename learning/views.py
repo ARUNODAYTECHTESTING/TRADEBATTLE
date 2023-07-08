@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from learning.serializers import (
     BookmarkSerializer,
+    CourseSerializer,
     QuestionSerializer,
     UserEnrolmentSerilizer,
 )
@@ -21,6 +22,7 @@ from .models import (
     UserEnrolment,
     Watchlist,
     BookMark,
+    Category,
 )
 from django.db.models import F
 
@@ -32,23 +34,25 @@ class LevelView(DropdownAPIView):
     serializer_fields = ["name", "description", "image", "id"]
 
 
+class CategoryView(DropdownAPIView):
+    ModelClass = Category
+    serializer_fields = ["name", "id"]
+
+
 class CourseView(DropdownAPIView):
     ModelClass = Course
-    serializer_fields = [
-        "name",
-        "description",
-        "image",
-        "fees",
-        "video_count",
-        "extra_data",
-        "enrolled_user",
-        "trailer",
-        "level__name",
-        "id",
-    ]
+    ModelSerializerClass = CourseSerializer
+
+    def update_list_output(self, request, output):
+        completed_course = UserEnrolment.objects.filter(user_id = request.user.id, completed = True)
+        output["completed"] = completed_course.count()
+        return output
 
     def get_queryset(self, request, *args, **kwargs):
-        return self.ModelClass.objects.filter(level__id=request.GET.get("id"))
+        category = request.GET.get("category")
+        if category:
+            return self.ModelClass.objects.filter(category_id=category)
+        return self.ModelClass.objects.all().order_by("level_id")
 
 
 class LectureView(DropdownAPIView):
@@ -134,7 +138,8 @@ class QuizView(APIView):
         obj = Watchlist.objects.filter(video_id=video_id)
         if obj.exists():
             ques = Question.objects.filter(lecture_id=video_id)
-            if obj.exists():
+            if ques.exists():
+                obj.update(quiz_atempt=F("quiz_atempt") + 1, completed=True)
                 output_data = QuestionSerializer(ques, many=True).data
                 res_status = HTTP_200_OK
                 output_status = True
@@ -170,9 +175,11 @@ class QuizView(APIView):
                     res_status = HTTP_200_OK
                     output_status = True
                     message = "Success"
-                    output_data = {"correct": correct_count, "total": total_count}
-                    obj.quiz_atempt += 1
-                    obj.save()
+                    output_data = {
+                        "correct": correct_count,
+                        "total": total_count,
+                        "points": 25,
+                    }
                 else:
                     message = "You have reached Maximum Attempt"
             else:
@@ -254,6 +261,16 @@ class BookView(APIView):
             message = "You have not started video yet"
         context = {"status": output_status, "detail": message, "data": output_data}
         return Response(context, status=res_status, content_type="application/json")
+
+
+class BookMarkListView(PaginatedApiView):
+    ModelClass = BookMark
+    ModelSerializerClass = BookmarkSerializer
+
+    def get_queryset(self, request, *args, **kwargs):
+        return self.ModelClass.objects.filter(user_id=request.user.id).distinct(
+            "page__lecture__course"
+        )
 
 
 class BookMarkView(PaginatedApiView):

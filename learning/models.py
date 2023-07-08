@@ -9,10 +9,20 @@ class Level(models.Model):
     name = models.CharField(max_length=20, unique=True)
     description = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to='level_image', default='level_image/default_image.png')
+    extra_field = models.JSONField(null = True)
 
     def __str__(self) -> str:
         return self.name
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+    
+    class Meta:
+        ordering = ("name",)
+    
 
 class Course(models.Model):
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
@@ -24,6 +34,7 @@ class Course(models.Model):
     enrolled_user = models.IntegerField(default=0)
     extra_data = models.JSONField(null=True, blank=True)
     trailer = models.CharField(max_length=1000, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -48,6 +59,7 @@ class Pages(models.Model):
 
     class Meta:
         unique_together = ("page_no", "lecture")
+        ordering = ("page_no",)
 
 
 class Question(models.Model):
@@ -67,6 +79,7 @@ class UserEnrolment(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index= True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.course.enrolled_user += 1
@@ -87,6 +100,14 @@ class Watchlist(models.Model):
     def save(self, *args, **kwargs):
         self.video.views += 1
         self.video.save()
+        if not self.quiz_atempt:
+            course = self.course
+            vid_count = self.course.course.video_count
+            all_vid_count = Watchlist.objects.filter(course_id = course.id).count()
+            if all_vid_count == vid_count:
+                course.completed = True
+                course.save()
+
         super(Watchlist, self).save(*args, **kwargs)
 
     class Meta:
@@ -98,8 +119,10 @@ class BookMark(models.Model):
     page = models.ForeignKey(Pages, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE , db_index=True)
 
+
     class Meta:
         unique_together = ("page", "user")
+
 
 
     
