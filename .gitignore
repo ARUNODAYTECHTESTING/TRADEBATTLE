@@ -138,6 +138,5 @@ ENV/
 # Visual Studio Code
 .vscode/
 
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py" 
+json-collection/*
+*.pem

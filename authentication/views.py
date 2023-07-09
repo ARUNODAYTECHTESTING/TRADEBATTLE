@@ -40,11 +40,15 @@ class UserSendOtpAPI(APIView):
             elif user.exists():
                 user_exist = True
             else:
-                user = User.objects.create(
-                    mobile = mobile,
-                    username = mobile,
-                    referal_code = get_random_string(length=10, allowed_chars=RANDOM_STRING_CHARS)
-                )
+                try:
+                    user= User.objects.get(mobile = mobile)
+                except User.DoesNotExist:
+                    user= User.objects.create(
+                        mobile = mobile,
+                        username = mobile,
+                    )
+                    user.referal_code = get_random_string(length=10, allowed_chars=RANDOM_STRING_CHARS)
+                    user.save()
                 user.send_mobile_otp()    
             res_status = HTTP_200_OK
             output_status = True
@@ -132,6 +136,7 @@ class SetPasswordView(APIView):
         if password and password_validator(password):
             user = request.user
             user.set_password(password)
+            user.save()
             res_status = HTTP_200_OK
             output_status = True
             message = "Success"

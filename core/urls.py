@@ -20,6 +20,8 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("authentication.urls")),
+    path("api/wallet/", include("wallet.urls")),
+    path("api/learning/", include("learning.urls")),
     path('api/news/', include("news.urls")),
 ]
 from django.conf import settings
