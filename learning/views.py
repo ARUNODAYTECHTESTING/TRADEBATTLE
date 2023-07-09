@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_412_PRECONDITION_FAILED
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from learning.serializers import (
@@ -46,6 +46,7 @@ class CourseView(DropdownAPIView):
     def update_list_output(self, request, output):
         completed_course = UserEnrolment.objects.filter(user_id = request.user.id, completed = True)
         output["completed"] = completed_course.count()
+        output["total_course"] = Course.objects.all().count()
         return output
 
     def get_queryset(self, request, *args, **kwargs):
@@ -92,7 +93,7 @@ class MyEnrollment(PaginatedApiView):
                 message = "Success"
             except Exception as e:
                 message = str(e)
-
+                res_status = HTTP_412_PRECONDITION_FAILED
         else:
             message = "Please provide course id"
         context = {"status": output_status, "detail": message}

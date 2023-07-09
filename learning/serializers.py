@@ -2,12 +2,7 @@ from rest_framework import serializers
 from .models import UserEnrolment, Question, Lecture, BookMark, Watchlist, Course
 
 
-class UserEnrolmentSerilizer(serializers.ModelSerializer):
 
-    class Meta:
-        exclude = ("user",)
-        model = UserEnrolment
-        depth = 1
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -31,14 +26,17 @@ class LectureSerializer(serializers.ModelSerializer):
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
+
+
     class Meta:
         model = BookMark
         exclude = ("user",)
-        depth = 1
+        depth = 3
 
 
 class CourseSerializer(serializers.ModelSerializer):
     progress = serializers.SerializerMethodField()
+    enrolled = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
@@ -52,7 +50,17 @@ class CourseSerializer(serializers.ModelSerializer):
             enroll = enroll.first()
             watch_count = enroll.watchlist_set.all().count()
             all_count = obj.lecture_set.all().count()
-            return (watch_count/all_count)*100
+            return int((watch_count/all_count)*100)
         return 0
+    
+    def get_enrolled(self, obj):
+        user = self.context.get('request').user
+        return UserEnrolment.objects.filter(course_id = obj.id, user_id = user.id).exists()
 
 
+class UserEnrolmentSerilizer(serializers.ModelSerializer):
+    course = CourseSerializer()
+    class Meta:
+        exclude = ("user",)
+        model = UserEnrolment
+        

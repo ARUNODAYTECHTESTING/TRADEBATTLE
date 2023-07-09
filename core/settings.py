@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "storages", 
     "authentication",
     "learning",
-    "wallet"
+    "wallet",
     "news",
 
 ]
