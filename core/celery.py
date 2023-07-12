@@ -13,7 +13,7 @@ app.conf.beat_schedule = {
 # Executes every midnight
 "every-midnight": {
     "task": "news.tasks.some_tasks",
-    "schedule": crontab(hour=0, minute=0),
+    "schedule": crontab(),
 }
 }
 
