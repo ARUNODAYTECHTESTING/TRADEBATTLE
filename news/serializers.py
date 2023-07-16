@@ -1,8 +1,15 @@
 from rest_framework import serializers
 from news import models as news_models
 
-class NewsSerializer(serializers.ModelSerializer):
+
+class NewsCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = news_models.NewsCategory
+        fields = ["id","name"]
+
+class NewsSerializer(serializers.ModelSerializer):
+    category = NewsCategorySerializer()
+    class Meta:
         model = news_models.News
-        fields = '__all__'
+        fields = ["id","stock_news","category"]

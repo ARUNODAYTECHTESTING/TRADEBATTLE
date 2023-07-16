@@ -229,3 +229,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
+
+SHARE_MARKET_NEWS_API_URL = config("SHARE_MARKET_NEWS_API_URL")
+
+X_RAPID_API_KEY = config("X_RapidAPI_Key")
+X_RAPID_API_HOST = config("X_RapidAPI_Host")
