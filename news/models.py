@@ -30,9 +30,6 @@ class News(TimeStamModel):
         ordering = ['-created_at']
 
 
-class Stock(TimeStamModel):
-    stock = models.CharField(max_length=64)
-    category = models.ForeignKey(Category,related_name="stocks",null=True,blank=True,on_delete=models.CASCADE)
 
 
 
