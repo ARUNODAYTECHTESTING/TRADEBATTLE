@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "learning",
     "wallet",
     "news",
+    "battle",
 
 ]
 
