@@ -12,7 +12,7 @@ class TimeStamModel(models.Model):
         abstract = True
 
 
-class NewsCategory(TimeStamModel):
+class Category(TimeStamModel):
     name = models.CharField(max_length=255)
 
     class Meta:
@@ -23,10 +23,16 @@ class NewsCategory(TimeStamModel):
     
 
 class News(TimeStamModel):
-    stock_news = ArrayField(models.CharField(max_length=255),null=True,blank=True)
-    category = models.ForeignKey(NewsCategory,related_name="news",null=True,blank=True,on_delete=models.CASCADE)
+    news = ArrayField(models.CharField(max_length=255),null=True,blank=True)
+    category = models.ForeignKey(Category,related_name="news",null=True,blank=True,on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-created_at']
 
-    
+
+class Stock(TimeStamModel):
+    stock = models.CharField(max_length=64)
+    category = models.ForeignKey(Category,related_name="stocks",null=True,blank=True,on_delete=models.CASCADE)
+
+
+

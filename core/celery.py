@@ -19,9 +19,39 @@ app.conf.enable_utc = True
 app.conf.beat_schedule = {
 
 "stock_news": {
-    "task": "news.tasks.get_stock_news",
+    "task": "news.tasks.get_news",
+    "schedule": crontab(hour=5,minute=0),
+    "args": (settings.SHARE_MARKET_NEWS_API_URL,{"X-RapidAPI-Key": settings.X_RAPID_API_KEY,"X-RapidAPI-Host": settings.X_RAPID_API_HOST},"indian stock"),
+    },
+
+    "technology_news": {
+    "task": "news.tasks.get_news",
+    "schedule": crontab(hour=5,minute=0),
+    "args": (settings.TECHNOLOGY_URL,{},"technology",{"apiKey":settings.TECHNOLOGY_API_KEY,"country":"in"}),
+    },
+
+    "business_news": {
+    "task": "news.tasks.get_news",
+    "schedule": crontab(hour=5,minute=0),
+    "args": (settings.TECHNOLOGY_URL,{},"business",{"apiKey":settings.TECHNOLOGY_API_KEY,"country":"in","category":"business"}),
+    },
+    "international_news": {
+    "task": "news.tasks.get_news",
+    "schedule": crontab(hour=5,minute=0),
+    "args": (settings.TECHNOLOGY_URL,{},"international",{"apiKey":settings.TECHNOLOGY_API_KEY,"q":"apple","category":"business"}),
+    },
+
+    "us stock": {
+    "task": "news.tasks.get_news",
+    "schedule": crontab(hour=5,minute=0),
+    "args": (settings.US_STOCK_URL,{"X-RapidAPI-Key": settings.US_STOCK_X_RAPIDAPI_KEY,"X-RapidAPI-Host": settings.US_STOCK_X_RAPIDAPI_HOST},"us stock",None),
+    },
+
+    "india stock": {
+    "task": "news.tasks.get_news",
     "schedule": crontab(),
-    "args": (settings.SHARE_MARKET_NEWS_API_URL,{"X-RapidAPI-Key": settings.X_RAPID_API_KEY,"X-RapidAPI-Host": settings.X_RAPID_API_HOST},"indian stock"),},
+    "args": (settings.INDIA_STOCK_URL,{"X-RapidAPI-Key": settings.INDIA_STOCK_X_RAPIDAPI_KEY,"X-RapidAPI-Host": settings.INDIA_STOCK_X_RAPIDAPI_HOST},"indian stock",{"Indices":"NIFTY 50"}),
+    },
 
 
 
