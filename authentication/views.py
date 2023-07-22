@@ -15,9 +15,10 @@ from rest_framework.views import APIView
 from shared.utils import get_token
 from shared.validator import email_validator, password_validator, phone_number_validator
 
-from .models import User
+from .models import User,ExperienceLevel
 from datetime import datetime
 from django.utils.crypto import get_random_string
+from authentication import serializers as auth_serializers
 
 RANDOM_STRING_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -236,3 +237,19 @@ class UsernameView(APIView):
 
 
 
+class UpdateProfile(APIView):
+    permission_classes = ()
+
+    def patch(self, request,*args,**kwargs):
+        try:
+            
+            serializer = auth_serializers.UpdateProfileSerializer(request.user,data = request.data,partial = True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"status":200,"detail":"Profile updated successfully"},status = 200)
+            return Response({"status":400,"detail":serializer.errors},status =400)
+        except Exception as e:
+            return Response({"status":400,"detail":str(e)},status = 400)
+
+
+        

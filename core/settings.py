@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "wallet",
     "news",
     "battle",
+    "avtar",
 
 ]
 
@@ -207,7 +208,7 @@ AWS_S3_FILE_OVERWRITE = False
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
-        'LOCATION': config("REDIS_URL",""),
+        'LOCATION': config("REDIS_URL","redis://localhost:6379"),
         'TIMEOUT': 4,
     }
 }
