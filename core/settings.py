@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "wallet",
     "battle",
     "avtar",
+    "payment",
 
 ]
 
@@ -216,3 +217,8 @@ PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
 AWS_DEFAULT_ACL = 'public-read'
+
+
+# Razorpay config
+RAZORPAY_TEST_KEY_ID=config("RAZORPAY_TEST_KEY_ID")
+RAZORPAY_TEST_SECRET_ID=config("RAZORPAY_TEST_SECRET_ID")

@@ -55,7 +55,7 @@ class TransactionView(APIView):
 
     def post(self, request,credit_type, *args, **kwargs):
         try:
-            status, data = wallet_service.WalletService.validate_transaction_request(request.data,int(credit_type))
+            status, data = wallet_service.WalletService.validate_transaction_request(request,request.data,int(credit_type))
 
         except Exception as e:
             status , data = 400, f"{e}"
