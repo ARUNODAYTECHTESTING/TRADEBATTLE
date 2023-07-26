@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from django.conf import settings
 from datetime import timedelta
 import os
 from pathlib import Path
@@ -222,3 +222,7 @@ AWS_DEFAULT_ACL = 'public-read'
 # Razorpay config
 RAZORPAY_TEST_KEY_ID=config("RAZORPAY_TEST_KEY_ID")
 RAZORPAY_TEST_SECRET_ID=config("RAZORPAY_TEST_SECRET_ID")
+
+
+
+settings.SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

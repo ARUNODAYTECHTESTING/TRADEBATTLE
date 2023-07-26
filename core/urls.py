@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/wallet/", include("wallet.urls")),
     path("api/learning/", include("learning.urls")),
     path('api/avtar/', include("avtar.api.urls")),
+    path('payment/', include("payment.urls")),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
