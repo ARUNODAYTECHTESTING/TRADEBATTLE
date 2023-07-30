@@ -205,6 +205,7 @@ STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_FILE_OVERWRITE = False
 
 
+
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -222,7 +223,7 @@ AWS_DEFAULT_ACL = 'public-read'
 # Razorpay config
 RAZORPAY_TEST_KEY_ID=config("RAZORPAY_TEST_KEY_ID")
 RAZORPAY_TEST_SECRET_ID=config("RAZORPAY_TEST_SECRET_ID")
-
+RAZORPAY_WEBHOOK_KEY_SECRET=config("RAZORPAY_WEBHOOK_KEY_SECRET")
 
 
 settings.SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
