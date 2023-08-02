@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Question
+from .models import Question, Stock
 
 
 class QusetionSrializer(serializers.ModelSerializer):
@@ -11,3 +11,5 @@ class QusetionSrializer(serializers.ModelSerializer):
 
     def get_option(self, obj):
         return list(obj.answer_set.all().values("id", "text"))
+    
+
