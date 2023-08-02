@@ -7,7 +7,7 @@ from rest_framework.status import (
 from rest_framework.views import APIView
 from .models import Referal
 from authentication.models import User
-
+from wallet import service as wallet_service
 
 # Create your views here.
 
@@ -49,3 +49,16 @@ class ReferalView(APIView):
             message = "referal code is required"
         context = {"status": output_status, "message": message}
         return Response(context, status=res_status, content_type="application/json")
+
+class TransactionView(APIView):
+    
+
+    def post(self, request,credit_type, *args, **kwargs):
+        try:
+            status, data = wallet_service.WalletService.validate_transaction_request(request,request.data,int(credit_type))
+
+        except Exception as e:
+            status , data = 400, f"{e}"
+
+        finally:
+            return Response({"status":status,"details":data},status = status)

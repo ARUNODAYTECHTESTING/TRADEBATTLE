@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from django.conf import settings
 from datetime import timedelta
 import os
 from pathlib import Path
@@ -49,8 +49,9 @@ INSTALLED_APPS = [
     "authentication",
     "learning",
     "wallet",
-    "news",
     "battle",
+    "avtar",
+    "payment",
 
 ]
 
@@ -204,10 +205,11 @@ STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_FILE_OVERWRITE = False
 
 
+
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
-        'LOCATION': config("REDIS_URL",""),
+        'LOCATION': config("REDIS_URL","redis://localhost:6379"),
         'TIMEOUT': 4,
     }
 }
@@ -216,3 +218,12 @@ PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
 AWS_DEFAULT_ACL = 'public-read'
+
+
+# Razorpay config
+RAZORPAY_TEST_KEY_ID=config("RAZORPAY_TEST_KEY_ID")
+RAZORPAY_TEST_SECRET_ID=config("RAZORPAY_TEST_SECRET_ID")
+RAZORPAY_WEBHOOK_KEY_SECRET=config("RAZORPAY_WEBHOOK_KEY_SECRET")
+
+
+settings.SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

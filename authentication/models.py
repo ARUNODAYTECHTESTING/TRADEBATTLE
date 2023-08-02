@@ -12,7 +12,8 @@ import random
 class ExperienceLevel(models.Model):
     name = models.CharField(max_length=50)
     point = models.IntegerField()
-    image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
+    # TODO: column would be drop bcz each experience level has multiple image and it can be update after certaine level get unlock
+    # image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
 
     def __str__(self) -> str:
         return self.name
@@ -39,6 +40,8 @@ class User(AbstractUser):
     pan_verified = models.BooleanField(default=False)
     referal_code = models.CharField(max_length=20, unique=True, null=True, blank=True )
     username = models.CharField(max_length= 50, null=True, blank=True, unique=True,db_index=True)
+    # TODO: added profile it can be update based on level achived and level would be multiple avtar
+    image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
     experience_point = models.IntegerField(default=0)
     ex_level = models.ForeignKey(ExperienceLevel, on_delete=models.DO_NOTHING, null= True, blank=True)
 

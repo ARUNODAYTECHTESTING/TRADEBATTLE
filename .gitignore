@@ -140,3 +140,6 @@ ENV/
 
 json-collection/*
 *.pem
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
