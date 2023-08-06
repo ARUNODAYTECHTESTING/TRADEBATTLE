@@ -1,4 +1,5 @@
 from django.db import models
+from authentication import models as auth_models
 
 # Create your models here.
 
@@ -10,8 +11,15 @@ class TimeStampModel(models.Model):
         abstract = True
 
 class Order(TimeStampModel):
+    ORDER_STATUS_CHOICES = (
+        ('PENDING', 'Pending'),
+        ('PROCESSING', 'Processing'),
+        ('COMPLETED', 'Completed'),
+    )
+    user = models.ForeignKey(auth_models.User, related_name="orders",on_delete=models.CASCADE,null=True,blank=True),
     order_id = models.CharField(max_length=255)
     response = models.JSONField()
+    status = models.CharField(choices=ORDER_STATUS_CHOICES,default="PENDING",max_length=64)
 
     class Meta:
         ordering = ('created_at',)

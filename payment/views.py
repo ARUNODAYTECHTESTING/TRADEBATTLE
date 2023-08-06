@@ -27,7 +27,8 @@ class PaymentCallBackview(APIView):
                 query.create_payment(json_data)
 
         except Exception as e:
-            pass
+            return Response({"status": 400, "detail": f"{e}"},status=400)
 
         finally:
-            pass
+            return Response({"status":"success","detail":"Payment successfull"},status=200)
+                    
