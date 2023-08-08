@@ -16,7 +16,7 @@ class Order(TimeStampModel):
         ('PROCESSING', 'Processing'),
         ('COMPLETED', 'Completed'),
     )
-    user = models.ForeignKey(auth_models.User, related_name="orders",on_delete=models.CASCADE,null=True,blank=True),
+    user = models.ForeignKey(auth_models.User, related_name="orders",on_delete=models.CASCADE,null=True,blank=True)
     order_id = models.CharField(max_length=255)
     response = models.JSONField()
     status = models.CharField(choices=ORDER_STATUS_CHOICES,default="PENDING",max_length=64)
@@ -29,7 +29,7 @@ class Order(TimeStampModel):
     
 
 class Payment(TimeStampModel):
-    order_id = models.ForeignKey(Order, related_name='payment',on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='payment',on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=255)
     response = models.JSONField()
 

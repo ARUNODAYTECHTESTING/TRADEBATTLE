@@ -13,13 +13,13 @@ class WalletService:
                 elif serializer.data['is_transaction_in_coin'] in ["true",True]:
                     amount = utils.Conversion.rupees_to_coin(serializer.data['coin'])
                     razorpay_order = payment_service.create_razorpay_order({'amount': amount, 'currency':'INR','receipt':request.user.mobile,'message':f"Deposit amount using coin: {serializer.data['coin']} -> {amount}"})
-                    payment_query.store_razorpay_order(razorpay_order)
+                    payment_query.store_razorpay_order(razorpay_order,request.user)
                     return 200, "Deposit amount successfully"
                 else:
                     coin = utils.Conversion.rupees_to_coin(serializer.data['rupees'])
                     amount = serializer.data['rupees']
                     razorpay_order = payment_service.create_razorpay_order({'amount': amount, 'currency':'INR','receipt':request.user.mobile,'message':f"Deposit  using rupees: {serializer.data['rupees']} -> {coin}"})
-                    payment_query.store_razorpay_order(razorpay_order)
+                    payment_query.store_razorpay_order(razorpay_order,request.user)
                     return 200, "Deposit amount successfully"
 
 

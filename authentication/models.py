@@ -41,7 +41,7 @@ class User(AbstractUser):
     referal_code = models.CharField(max_length=20, unique=True, null=True, blank=True )
     username = models.CharField(max_length= 50, null=True, blank=True, unique=True,db_index=True)
     # TODO: added profile it can be update based on level achived and level would be multiple avtar
-    image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
+    image = models.CharField(null = True,blank=True,max_length = 255)
     experience_point = models.IntegerField(default=0)
     ex_level = models.ForeignKey(ExperienceLevel, on_delete=models.DO_NOTHING, null= True, blank=True)
 
