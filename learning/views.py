@@ -25,7 +25,7 @@ from .models import (
     Category,
 )
 from django.db.models import F
-
+from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 
 
@@ -77,7 +77,11 @@ class MyEnrollment(PaginatedApiView):
 
     def get_queryset(self, request, *args, **kwargs):
         return self.ModelClass.objects.filter(user_id=request.user.id)
-
+    @swagger_auto_schema(
+        request_body=UserEnrolmentSerilizer,
+        responses={200: "Success", 400: "Bad Request"},
+        operation_description="Enroll the user in a course."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -152,6 +156,11 @@ class QuizView(APIView):
         context = {"status": output_status, "detail": message, "data": output_data}
         return Response(context, status=res_status, content_type="application/json")
 
+    @swagger_auto_schema(
+        request_body=QuestionSerializer,
+        responses={200: "Success", 400: "Bad Request"},
+        operation_description="Submit quiz answers for a lecture."
+    )
     def post(self, request, *args, **kwargs):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -281,6 +290,11 @@ class BookMarkView(PaginatedApiView):
     def get_queryset(self, request, *args, **kwargs):
         return self.ModelClass.objects.filter(user_id=request.user.id)
 
+    @swagger_auto_schema(
+        request_body=BookmarkSerializer,
+        responses={200: "Success", 400: "Bad Request"},
+        operation_description="Create a bookmark for a page."
+    )
     def post(self, request, *args, **kwargs):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -296,6 +310,12 @@ class BookMarkView(PaginatedApiView):
         context = {"status": output_status, "detail": message}
         return Response(context, status=res_status, content_type="application/json")
 
+    
+    @swagger_auto_schema(
+        request_body=BookmarkSerializer,
+        responses={200: "Success", 400: "Bad Request"},
+        operation_description="Delete a bookmark for a page."
+    )
     def delete(self, request, *args, **kwargs):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False

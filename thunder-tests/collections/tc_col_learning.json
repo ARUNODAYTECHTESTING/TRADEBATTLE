@@ -1,0 +1,257 @@
+{
+    "_id": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+    "colName": "Learning",
+    "created": "2023-08-09T10:36:18.881Z",
+    "sortNum": 10000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "b5336496-6292-4bcb-ba89-971c83349c86",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "GEt course from level",
+            "url": "http://localhost:8000/api/learning/course/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-08-09T10:36:18.884Z",
+            "modified": "2023-08-09T10:36:18.884Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "7e29a8c4-6c1c-4d19-8d81-8f69fd927721",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Get Level",
+            "url": "http://localhost:8000/api/learning/level/",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-08-09T10:36:18.886Z",
+            "modified": "2023-08-09T10:36:18.886Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "274f7ebd-6e10-482a-8440-f3aace929f45",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "get lecture from course id",
+            "url": "http://localhost:8000/api/learning/lecture/?id=1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-08-09T10:36:18.887Z",
+            "modified": "2023-08-09T10:36:18.887Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "4aca014a-b21b-40a9-becb-c0635333b460",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "enrolment in course",
+            "url": "http://localhost:8000/api/learning/enrollment/",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-08-09T10:36:18.888Z",
+            "modified": "2023-08-09T10:37:51.609Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"course\" : 1  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "7289ff35-ec4e-4e54-bbbc-f7b03564b41c",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "usesr enrolment",
+            "url": "http://localhost:8000/api/learning/enrollment/",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-08-09T10:36:18.889Z",
+            "modified": "2023-08-09T10:36:18.889Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": ""
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "dad8554a-4dd1-4ed1-b554-13526b3eaceb",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Get video",
+            "url": "http://localhost:8000/api/learning/open-lecture/1/",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-08-09T10:36:18.890Z",
+            "modified": "2023-08-09T10:37:08.495Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"course\" : 100\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "80898733-5595-464c-862f-77988aed4afd",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Get quiz",
+            "url": "http://localhost:8000/api/learning/quiz/1/",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2023-08-09T10:36:18.891Z",
+            "modified": "2023-08-09T10:36:18.891Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "24dc7521-61f1-434d-8725-6d78774f777c",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Post Quiz",
+            "url": "http://localhost:8000/api/learning/quiz/1/",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-08-09T10:36:18.892Z",
+            "modified": "2023-08-09T10:36:18.892Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"answer\": [\n        1,6\n    ]\n}"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "23c59437-37db-496b-bc18-878a6b708f89",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Get Book",
+            "url": "http://localhost:8000/api/learning/book/<video id>/",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-08-09T10:36:18.893Z",
+            "modified": "2023-08-09T10:36:18.893Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "c1986c8a-5b82-44ea-9177-65fb9a72c8b6",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Book mark page",
+            "url": "http://localhost:8000/api/learning/bookmark/",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2023-08-09T10:36:18.894Z",
+            "modified": "2023-08-09T10:36:18.894Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"page\": 2  //page id\n}"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "6d7c604f-65be-456b-b650-f13ed5cf4980",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Get Book Marked pages",
+            "url": "http://localhost:8000/api/learning/bookmark/",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-08-09T10:36:18.895Z",
+            "modified": "2023-08-09T10:36:18.895Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"page\": 2  //page id\n}"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "e3d09f5d-c11a-4776-926f-25875d34ea91",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Remove book mark",
+            "url": "http://localhost:8000/api/learning/bookmark/",
+            "method": "DELETE",
+            "sortNum": 120000,
+            "created": "2023-08-09T10:36:18.896Z",
+            "modified": "2023-08-09T10:36:18.896Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"page\": 1\n}"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "8e4f6467-4d65-48a0-8ab7-9fb22305ee09",
+            "colId": "e85e649b-0eef-4e34-9817-14be7d7d4724",
+            "containerId": "",
+            "name": "Get category",
+            "url": "http://localhost:8000/api/learning/category/",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2023-08-09T10:36:18.897Z",
+            "modified": "2023-08-09T10:36:18.897Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        }
+    ]
+}

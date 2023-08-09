@@ -19,12 +19,19 @@ from .models import User,ExperienceLevel
 from datetime import datetime
 from django.utils.crypto import get_random_string
 from authentication import serializers as auth_serializers
+from drf_yasg.utils import swagger_auto_schema
 
 RANDOM_STRING_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+
+
 class UserSendOtpAPI(APIView):
     permission_classes = ()
-
+    @swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer,  
+        responses={200: "Success", 400: "Failed"},
+        operation_description="Send OTP to mobile number."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -66,7 +73,11 @@ class UserSendOtpAPI(APIView):
 class VerifyOtpView(APIView):
 
     permission_classes = ()
-
+    @swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer, 
+        responses={200: "Success", 400: "Failed"},
+        operation_description="Verify OTP for mobile number."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -104,7 +115,11 @@ class VerifyOtpView(APIView):
 class ResendOtpVIew(APIView):
 
     permission_classes = ()
-
+    @swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer, 
+        responses={200: "Success", 400: "Failed"},
+        operation_description="Resend OTP to mobile number."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -128,7 +143,11 @@ class ResendOtpVIew(APIView):
         return Response(context, status=res_status, content_type="application/json")
     
 class SetPasswordView(APIView):
-
+    @swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer,  
+        responses={200: "Success", 400: "Failed"},
+        operation_description="Set a new password for the user."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -153,7 +172,11 @@ class SetPasswordView(APIView):
 class LoginView(APIView):
 
     permission_classes = ()
-
+    @swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer,  
+        responses={200: "Success", 400: "Failed"},
+        operation_description="User login with mobile number and password."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -209,7 +232,11 @@ class UsernameView(APIView):
         return Response(context, status=res_status, content_type="application/json")
 
 
-
+    @swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer,  
+        responses={200: "Success", 400: "Failed"},
+        operation_description="Check and update username."
+    )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
         output_status = False
@@ -239,7 +266,11 @@ class UsernameView(APIView):
 
 class UpdateProfile(APIView):
     permission_classes = ()
-
+    swagger_auto_schema(
+        request_body=auth_serializers.UpdateProfileSerializer,  
+        responses={200: "Success", 400: "Failed"},
+        operation_description="Update user profile."
+    )
     def patch(self, request,*args,**kwargs):
         try:
             
