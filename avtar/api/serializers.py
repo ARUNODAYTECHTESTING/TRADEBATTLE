@@ -8,3 +8,10 @@ class AvtarSerilizer(serializers.ModelSerializer):
     class Meta:
         model = avtar_models.LevelAvtar
         fields = ["id","name","image","level"]
+
+
+class ColorPalateSerilizer(serializers.ModelSerializer):
+    level = auth_serializers.ExperienceLevelSerializer(many=True)
+    class Meta:
+        model = avtar_models.LevelColorPalate
+        fields = "__all__"

@@ -15,3 +15,14 @@ class AvtarDetailsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = avtar_models.LevelAvtar.objects.all()
     serializer_class = avtar_api_serializers.AvtarSerilizer
 
+class ColorPalateView(generics.ListCreateAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    queryset = avtar_models.LevelColorPalate.objects.all()
+    serializer_class = avtar_api_serializers.ColorPalateSerilizer
+   
+class ColorPalateDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    queryset = avtar_models.LevelColorPalate.objects.all()
+    serializer_class = avtar_api_serializers.ColorPalateSerilizer
