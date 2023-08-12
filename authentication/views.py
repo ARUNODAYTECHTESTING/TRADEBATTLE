@@ -19,6 +19,7 @@ from .models import User,ExperienceLevel
 from datetime import datetime
 from django.utils.crypto import get_random_string
 from authentication import serializers as auth_serializers
+from authentication import service as auth_service
 
 RANDOM_STRING_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -235,6 +236,17 @@ class UsernameView(APIView):
             }
         return Response(context, status=res_status, content_type="application/json")
 
+
+class ProfileView(APIView):
+    permission_classes = ()
+
+    def get(self,request,*args,**kwargs):
+        try:
+            status,data = auth_service.AuthService.handle_profile_view(request.user)
+        except Exception as e:
+            status,data = 400, str(e)
+        finally:
+            return Response({"status":status,"detail":data},status = status)
 
 
 class UpdateProfile(APIView):

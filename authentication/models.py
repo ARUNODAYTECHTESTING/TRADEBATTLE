@@ -12,6 +12,7 @@ import random
 class ExperienceLevel(models.Model):
     name = models.CharField(max_length=50)
     point = models.IntegerField()
+    color = models.CharField(max_length=64,null = True,blank = True)
     # TODO: column would be drop bcz each experience level has multiple image and it can be update after certaine level get unlock
     # image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
 
@@ -52,3 +53,10 @@ class User(AbstractUser):
             self.otp_code = random.randint(111111, 999999)
         self.otp_created_at = timezone.now()
         self.save()
+    
+    def save(self, *args, **kwargs):    
+        if not self.ex_level:
+            default_level = ExperienceLevel.objects.filter(name__icontains="Arjuna").first()
+            self.ex_level = default_level
+        super().save(*args, **kwargs)
+    
