@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "payment",
     'drf_yasg',
     
+    
 
 ]
 
@@ -230,6 +231,16 @@ RAZORPAY_WEBHOOK_KEY_SECRET=config("RAZORPAY_WEBHOOK_KEY_SECRET")
 
 settings.SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
+
 SWAGGER_SETTINGS = {
-   'USE_SESSION_AUTH': False
+    "SECURITY_DEFINITIONS": {
+        "JWT Bearer {JWT}": {
+            "name": "Authorization",
+            "type": "apiKey",
+            "in": "header",
+        }
+    },
+    "USE_SESSION_AUTH": False,
 }
+
+FORCE_SCRIPT_NAME = "/"
