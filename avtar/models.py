@@ -19,14 +19,6 @@ class LevelAvtar(TmeStampModel):
     class Meta:
         ordering = ('-created_at',)
 
-class LevelColorPalate(TmeStampModel):
-    code = models.CharField(max_length=64)
-    name = models.CharField(max_length=64, null = True, blank = True)
-    
-    # TODO: Relationship
-    level = models.ManyToManyField(auth_models.ExperienceLevel)
 
-    class Meta:
-        ordering = ('-created_at',)
     
         
