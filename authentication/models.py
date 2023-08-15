@@ -12,6 +12,7 @@ import random
 class ExperienceLevel(models.Model):
     name = models.CharField(max_length=50)
     point = models.IntegerField()
+    color = models.CharField(max_length=64,null = True,blank = True)
     # TODO: column would be drop bcz each experience level has multiple image and it can be update after certaine level get unlock
     # image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
 
@@ -41,7 +42,7 @@ class User(AbstractUser):
     referal_code = models.CharField(max_length=20, unique=True, null=True, blank=True )
     username = models.CharField(max_length= 50, null=True, blank=True, unique=True,db_index=True)
     # TODO: added profile it can be update based on level achived and level would be multiple avtar
-    image = models.ImageField(upload_to='profile_image', default='profile_image/default_image.png')
+    image = models.CharField(null = True,blank=True,max_length = 255)
     experience_point = models.IntegerField(default=0)
     ex_level = models.ForeignKey(ExperienceLevel, on_delete=models.DO_NOTHING, null= True, blank=True)
 
@@ -52,3 +53,10 @@ class User(AbstractUser):
             self.otp_code = random.randint(111111, 999999)
         self.otp_created_at = timezone.now()
         self.save()
+    
+    def save(self, *args, **kwargs):    
+        if not self.ex_level:
+            default_level = ExperienceLevel.objects.filter(name__icontains="Arjuna").first()
+            self.ex_level = default_level
+        super().save(*args, **kwargs)
+    

@@ -17,7 +17,7 @@ class Referal(models.Model):
 
 
 class Wallet(models.Model):
-    user = models.OneToOneField("authentication.User", on_delete=models.CASCADE)
+    user = models.OneToOneField("authentication.User", on_delete=models.CASCADE,related_name = "wallet")
     deposit_bal = models.FloatField(default=0.0)
     bonus_bal = models.FloatField(default=0.0)
     winning_amount = models.FloatField(default=0.0)

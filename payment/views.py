@@ -6,6 +6,7 @@ from payment import service as payment_service
 from rest_framework.response import Response
 import json
 from payment import query
+
 # Create your views here.
 def load_payment_page(request):
     return render(request, 'payment.html', {})

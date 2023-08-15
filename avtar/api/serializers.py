@@ -8,3 +8,5 @@ class AvtarSerilizer(serializers.ModelSerializer):
     class Meta:
         model = avtar_models.LevelAvtar
         fields = ["id","name","image","level"]
+
+
