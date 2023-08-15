@@ -196,7 +196,7 @@ class LoginView(APIView):
                 else:
                     message = "Please provide valid password"
             else:
-                message = "Please provide valid mobilee number"
+                message = "Please provide valid mobile number"
         else:
             message = "Mobile and password are mandatory"
 
