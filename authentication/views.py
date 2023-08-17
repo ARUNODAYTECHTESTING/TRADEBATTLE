@@ -20,6 +20,9 @@ from datetime import datetime
 from django.utils.crypto import get_random_string
 from authentication import serializers as auth_serializers
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.parsers import MultiPartParser
+from rest_framework.decorators import parser_classes
+
 
 RANDOM_STRING_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -28,7 +31,7 @@ RANDOM_STRING_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 class UserSendOtpAPI(APIView):
     permission_classes = ()
     @swagger_auto_schema(
-        request_body=auth_serializers.UpdateProfileSerializer,  
+        request_body=auth_serializers.UserSendOtpAPISerializer,  
         responses={200: "Success", 400: "Failed"},
         operation_description="Send OTP to mobile number."
     )
@@ -74,7 +77,7 @@ class VerifyOtpView(APIView):
 
     permission_classes = ()
     @swagger_auto_schema(
-        request_body=auth_serializers.UpdateProfileSerializer, 
+        request_body=auth_serializers.VerifyOtpViewSerializer, 
         responses={200: "Success", 400: "Failed"},
         operation_description="Verify OTP for mobile number."
     )
@@ -116,7 +119,7 @@ class ResendOtpVIew(APIView):
 
     permission_classes = ()
     @swagger_auto_schema(
-        request_body=auth_serializers.UpdateProfileSerializer, 
+        request_body=auth_serializers.ResendOtpViewSerializer, 
         responses={200: "Success", 400: "Failed"},
         operation_description="Resend OTP to mobile number."
     )
@@ -144,7 +147,7 @@ class ResendOtpVIew(APIView):
     
 class SetPasswordView(APIView):
     @swagger_auto_schema(
-        request_body=auth_serializers.UpdateProfileSerializer,  
+        request_body=auth_serializers.SetPasswordViewSerializer,  
         responses={200: "Success", 400: "Failed"},
         operation_description="Set a new password for the user."
     )
@@ -173,7 +176,7 @@ class LoginView(APIView):
 
     permission_classes = ()
     @swagger_auto_schema(
-        request_body=auth_serializers.UpdateProfileSerializer,  
+        request_body=auth_serializers.LoginViewSerializer,  
         responses={200: "Success", 400: "Failed"},
         operation_description="User login with mobile number and password."
     )
@@ -233,7 +236,7 @@ class UsernameView(APIView):
 
 
     @swagger_auto_schema(
-        request_body=auth_serializers.UpdateProfileSerializer,  
+        request_body=auth_serializers.UsernameViewSerializer,  
         responses={200: "Success", 400: "Failed"},
         operation_description="Check and update username."
     )
