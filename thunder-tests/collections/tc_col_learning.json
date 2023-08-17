@@ -46,18 +46,21 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-08-09T10:36:18.887Z",
-            "modified": "2023-08-09T10:36:18.887Z",
+            "modified": "2023-08-11T09:31:22.244Z",
             "headers": [],
             "params": [
                 {
                     "name": "id",
-                    "value": "1"
+                    "value": "1",
+                    "isPath": false
                 }
             ],
             "auth": {
                 "type": "bearer",
-                "bearer": "{{token}}"
-            }
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQxMDIzLCJpYXQiOjE2OTE3NDUwMjMsImp0aSI6IjY1ZjBlMzFjOTljMjRjZWViNWU2NDEwZDFmNjM1YzA0IiwidXNlcl9pZCI6MTEwfQ.2iOlcl8RIegQuYU0G3j9aWcBE-lpxFH-IeDLIhWZ6g8",
+                "bearerPrefix": "Bearer "
+            },
+            "tests": []
         },
         {
             "_id": "4aca014a-b21b-40a9-becb-c0635333b460",
@@ -111,7 +114,7 @@
             "method": "GET",
             "sortNum": 60000,
             "created": "2023-08-09T10:36:18.890Z",
-            "modified": "2023-08-09T10:37:08.495Z",
+            "modified": "2023-08-11T09:32:00.082Z",
             "headers": [],
             "params": [],
             "body": {
@@ -121,7 +124,7 @@
             },
             "auth": {
                 "type": "bearer",
-                "bearer": "{{token}}"
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQxMDIzLCJpYXQiOjE2OTE3NDUwMjMsImp0aSI6IjY1ZjBlMzFjOTljMjRjZWViNWU2NDEwZDFmNjM1YzA0IiwidXNlcl9pZCI6MTEwfQ.2iOlcl8RIegQuYU0G3j9aWcBE-lpxFH-IeDLIhWZ6g8"
             },
             "tests": []
         },
