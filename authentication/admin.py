@@ -10,7 +10,7 @@ admin.site.register(ExperienceLevel)
 class CustomeUserAdmin(UserAdmin):
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "email", "mobile", "pan_number", "pan_verified", "referal_code", "experience_point", "ex_level","image" )}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "email", "mobile", "pan_number", "pan_verified", "referal_code", "experience_point", "ex_level","active_avtar" )}),
         (
             _("Permissions"),
             {
