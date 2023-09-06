@@ -6,6 +6,8 @@ from django.db.models import Sum
 from authentication.models import ExperienceLevel, User
 from shared.validator import phone_number_validator
 from authentication import models as auth_models
+import pdb
+
 class ExperienceLevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExperienceLevel
@@ -39,7 +41,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
     
     def get_total_coins(self,obj):
-        amount = wallet_models.Transaction.objects.filter(wallet = obj.wallet,credit_type=1).aggregate(Sum('amount'))['amount__sum']
+        # pdb.set_trace() 
+        amount=0.0
+        if obj.wallet:
+            amount = wallet_models.Transaction.objects.filter(wallet = obj.wallet,credit_type=1).aggregate(Sum('amount'))['amount__sum']
         return amount*10
     
     def get_battle_played(self,obj):
