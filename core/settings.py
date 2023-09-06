@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "avtar",
     "payment",
     'drf_yasg',
+    'solo_battle'
     
     
 
