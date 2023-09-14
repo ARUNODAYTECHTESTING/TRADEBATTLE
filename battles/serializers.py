@@ -1,7 +1,16 @@
 from rest_framework import serializers
-
-from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser, QuestionSet, Answers
-
+from .models import (
+    MarketType,
+    BattleCategory,
+    TimeBattle,
+    TimeBattleUser,
+    SoloBattle,
+    SoloBattleUser,
+    LeagueBattle,
+    LeagueBattleUser,
+    QuestionSet,
+    Answers,
+)
 
 class MarketTypeSerializer(serializers.ModelSerializer):
     """Serializer for the MarketType model."""
@@ -44,6 +53,7 @@ class TimeBattleSerializer(serializers.ModelSerializer):
             'max_participants',
             'entry_fee',
             'questions_set',
+            'max_entries',  
         )
 
 
@@ -55,13 +65,15 @@ class TimeBattleUserSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'user',
-            'battle',
-            'number_of_entries',
+            'battle_id',
             'submitted_time_and_answers',
-            'enrollment_time',
             'total_answer_duration',
-            'coins_earned',
+            'enrollment_time',
             'status',
+            'coins_earned',
+            'experience_points_earned',
+            'entry_fees_paid',
+            'questions_set',
         )
 
 
@@ -90,6 +102,8 @@ class SoloBattleSerializer(serializers.ModelSerializer):
             'max_participants',
             'entry_fee',
             'questions_set',
+            'max_allowed_stocks',  
+            'multiplier_options',  
         )
 
 
@@ -105,9 +119,10 @@ class SoloBattleUserSerializer(serializers.ModelSerializer):
             'number_of_entries',
             'submitted_time_and_answers',
             'enrollment_time',
-            'total_answer_duration',
-            'coins_earned',
             'status',
+            'coins_earned',
+            'experience_points_earned',
+            'entry_fees_paid',
         )
 
 
@@ -136,6 +151,9 @@ class LeagueBattleSerializer(serializers.ModelSerializer):
             'max_participants',
             'entry_fee',
             'questions_set',
+            'max_allowed_stocks',  
+            'multiplier_options', 
+            'max_entries', 
         )
 
 
@@ -154,6 +172,8 @@ class LeagueBattleUserSerializer(serializers.ModelSerializer):
             'total_answer_duration',
             'coins_earned',
             'status',
+            'experience_points_earned',
+            'entry_fees_paid',
         )
 
 
