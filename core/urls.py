@@ -50,6 +50,7 @@ urlpatterns = [
     path('api/avtar/', include("avtar.api.urls")),
     path('payment/', include("payment.urls")),
     path('solo-battle/',include("solo_battle.urls")),
+    path('battles/',include("battles.urls"))
 ]
 
 if settings.DEBUG:
