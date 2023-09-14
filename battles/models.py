@@ -1,5 +1,5 @@
 # models.py
-
+from avtar import models as avtar_models
 from django.db import models
 
 BATTLE_STATUS_CHOICES = (
@@ -8,7 +8,7 @@ BATTLE_STATUS_CHOICES = (
     ('completed', 'Completed'),
 )
 
-class MarketType(models.Model):
+class MarketType(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
     max_entries = models.IntegerField()
     class Meta:
@@ -18,7 +18,7 @@ class MarketType(models.Model):
         return self.name
 
 
-class BattleCategory(models.Model):
+class BattleCategory(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
     class Meta:
         ordering = ("-created_at",)
@@ -27,7 +27,7 @@ class BattleCategory(models.Model):
         return self.name
 
 
-class TimeBattle(models.Model):
+class TimeBattle(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
     market_type = models.ForeignKey(MarketType, on_delete=models.CASCADE)
     category = models.ForeignKey(BattleCategory, on_delete=models.CASCADE)
@@ -55,7 +55,7 @@ class TimeBattle(models.Model):
         return self.name
 
 
-class TimeBattleUser(models.Model):
+class TimeBattleUser(avtar_models.TmeStampModel):
     user = models.ForeignKey('authentication.User', on_delete=models.CASCADE,db_index=True,related_name='time_battle_users')
     battle_id = models.ForeignKey(TimeBattle, on_delete=models.CASCADE)
     submitted_time_and_answers = models.JSONField()
@@ -74,7 +74,7 @@ class TimeBattleUser(models.Model):
 
 
 
-class SoloBattle(models.Model):
+class SoloBattle(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
     market_type = models.ForeignKey(MarketType, on_delete=models.CASCADE)
     category = models.ForeignKey(BattleCategory, on_delete=models.CASCADE)
@@ -105,7 +105,7 @@ class SoloBattle(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class SoloBattleUser(models.Model):
+class SoloBattleUser(avtar_models.TmeStampModel):
     user = models.ForeignKey('authentication.User', on_delete=models.CASCADE,db_index=True,related_name='solo_battle_users')
     battle = models.ForeignKey(SoloBattle, on_delete=models.CASCADE)
     number_of_entries = models.IntegerField()
@@ -123,7 +123,7 @@ class SoloBattleUser(models.Model):
 
 
 
-class LeagueBattle(models.Model):
+class LeagueBattle(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
     market_type = models.ForeignKey(MarketType, on_delete=models.CASCADE)
     category = models.ForeignKey(BattleCategory, on_delete=models.CASCADE)
@@ -154,7 +154,7 @@ class LeagueBattle(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class LeagueBattleUser(models.Model):
+class LeagueBattleUser(avtar_models.TmeStampModel):
     user = models.ForeignKey('authentication.User', on_delete=models.CASCADE,db_index=True,related_name='league_battle_users')
     battle = models.ForeignKey(LeagueBattle, on_delete=models.CASCADE)
     number_of_entries = models.IntegerField()
@@ -172,7 +172,7 @@ class LeagueBattleUser(models.Model):
         return self.user
 
 
-class QuestionSet(models.Model):
+class QuestionSet(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
     questions = models.JSONField()
     answer = models.ManyToManyField('Answers')
@@ -182,7 +182,7 @@ class QuestionSet(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class Answers(models.Model):
+class Answers(avtar_models.TmeStampModel):
     option = models.CharField(max_length=150)
     class Meta:
         ordering = ("-created_at",)

@@ -53,7 +53,6 @@ class TimeBattleSerializer(serializers.ModelSerializer):
             'max_participants',
             'entry_fee',
             'questions_set',
-            'max_entries',  
         )
 
 
@@ -150,7 +149,6 @@ class LeagueBattleSerializer(serializers.ModelSerializer):
             'max_winnings',
             'max_participants',
             'entry_fee',
-            'questions_set',
             'max_allowed_stocks',  
             'multiplier_options', 
             'max_entries', 
