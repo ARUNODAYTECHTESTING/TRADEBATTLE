@@ -46,10 +46,8 @@ urlpatterns = [
     path("api/auth/", include("authentication.urls")),
     path("api/wallet/", include("wallet.urls")),
     path("api/learning/", include("learning.urls")),
-    path("api/battle/", include("battle.urls")),
     path('api/avtar/', include("avtar.api.urls")),
     path('payment/', include("payment.urls")),
-    path('solo-battle/',include("solo_battle.urls")),
     path('battles/',include("battles.urls"))
 ]
 
