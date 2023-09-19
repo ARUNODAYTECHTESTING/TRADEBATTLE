@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser, QuestionSet, Answers
-from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, QuestionSetSerializer, AnswersSerializer
+from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle, QuestionSet, Answers
+from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, QuestionSetSerializer, AnswersSerializer, PredictBattleSerializer, PredictBattleUserSerializer
 
 
 class MarketTypeViewSet(viewsets.ModelViewSet):
@@ -73,3 +73,16 @@ class AnswersViewSet(viewsets.ModelViewSet):
 
     queryset = Answers.objects.all()
     serializer_class = AnswersSerializer
+
+
+class PredictBattleViewSet(viewsets.ModelViewSet):
+    """API endpoint for managing PredictBattles."""
+
+    queryset = PredictBattle.objects.all()
+    serializer_class = PredictBattleSerializer
+    
+class PredictBattleUserViewSet(viewsets.ModelViewSet):
+    """API endpoint for managing PredictBattleUsers."""
+
+    queryset = PredictBattleUser.objects.all()
+    serializer_class = PredictBattleUserSerializer

@@ -8,6 +8,8 @@ from .models import (
     SoloBattleUser,
     LeagueBattle,
     LeagueBattleUser,
+    PredictBattle,
+    PredictBattleUser,
     QuestionSet,
     Answers,
 )
@@ -194,3 +196,51 @@ class AnswersSerializer(serializers.ModelSerializer):
         model = Answers
         fields = ('option',)
 
+class PredictBattleSerializer(serializers.ModelSerializer):
+    """Serializer for the PredictBattle model."""
+
+    class Meta:
+        model = PredictBattle
+        fields = (
+            'id',
+            'name',
+            'market_type',
+            'category',
+            'battle_image',
+            'enrollment_start_time',
+            'enrollment_end_time',
+            'battle_start_time',
+            'battle_end_time',
+            'status',
+            'battle_recurrent_count',
+            'battle_frequency',
+            'trivia',
+            'coins_multiplier_constant',
+            'experience_points_multiplier_constant',
+            'max_winnings',
+            'max_participants',
+            'entry_fee',
+            'max_allowed_stocks',  
+            'multiplier_options', 
+            'max_entries', 
+            'questions_set', 
+        )
+
+class PredictBattleUserSerializer(serializers.ModelSerializer):
+    """Serializer for the PredictBattleUser model."""
+
+    class Meta:
+        model = PredictBattleUser
+        fields = (
+            'id',
+            'user',
+            'battle',
+            'number_of_entries',
+            'submitted_time_and_answers',
+            'enrollment_time',
+            'total_answer_duration',
+            'coins_earned',
+            'status',
+            'experience_points_earned',
+            'entry_fees_paid',
+        )
