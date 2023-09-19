@@ -17,6 +17,8 @@ router.register(r'league_battles', views.LeagueBattleViewSet)
 router.register(r'league_battle_users', views.LeagueBattleUserViewSet)
 router.register(r'question_sets', views.QuestionSetViewSet)
 router.register(r'answers', views.AnswersViewSet)
+router.register(r'predict_battles', views.PredictBattleViewSet)
+router.register(r'predict_battle_users', views.PredictBattleUserViewSet)
 
 
 urlpatterns = [
