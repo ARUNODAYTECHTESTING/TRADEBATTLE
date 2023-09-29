@@ -169,7 +169,7 @@ class LeagueBattleUser(avtar_models.TmeStampModel):
         ordering = ("-created_at",)
 
     def __str__(self) -> str:
-        return self.user
+        return self.battle
 
 class PredictBattle(avtar_models.TmeStampModel):
     name = models.CharField(max_length=255)
