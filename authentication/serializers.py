@@ -3,7 +3,7 @@
 from rest_framework import serializers
 from wallet import models as wallet_models
 from django.db.models import Sum
-from authentication.models import ExperienceLevel, User
+from authentication.models import ExperienceLevel, User,LevelAvtar
 from shared.validator import phone_number_validator
 from authentication import models as auth_models
 import pdb
@@ -60,3 +60,13 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["image"]
+
+
+
+class AvtarSerilizer(serializers.ModelSerializer):
+    level = ExperienceLevelSerializer(many=True)
+    class Meta:
+        model = LevelAvtar
+        fields = ["id","name","image","level"]
+
+

@@ -8,8 +8,14 @@ import random
 # Create your models here.
 
 
+class TmeStampModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+                                      
+    class Meta:
+        abstract = True
 
-class ExperienceLevel(models.Model):
+class ExperienceLevel(TmeStampModel):
     name = models.CharField(max_length=50)
     point = models.IntegerField()
     color = models.CharField(max_length=64,null = True,blank = True)
@@ -20,7 +26,7 @@ class ExperienceLevel(models.Model):
         return self.name
 
 
-class User(AbstractUser):
+class User(AbstractUser,TmeStampModel):
     GENDER = (
         (1, "MALE"), 
         (2, "FEMALE"),
@@ -59,4 +65,16 @@ class User(AbstractUser):
             default_level = ExperienceLevel.objects.filter(name__icontains="Arjuna").first()
             self.ex_level = default_level
         super().save(*args, **kwargs)
+
+
+
+
+class LevelAvtar(TmeStampModel):
+    image = models.ImageField(upload_to='avtar')
+    name = models.CharField(max_length=64, null = True, blank = True)
     
+    # TODO: Relationship
+    level = models.ManyToManyField(ExperienceLevel)
+
+    class Meta:
+        ordering = ('-created_at',)
