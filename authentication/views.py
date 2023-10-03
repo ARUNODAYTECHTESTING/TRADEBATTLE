@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from shared.utils import get_token
 from shared.validator import email_validator, password_validator, phone_number_validator
 
-from .models import User,ExperienceLevel
+from .models import User,ExperienceLevel,LevelAvtar
 from datetime import datetime
 from django.utils.crypto import get_random_string
 from authentication import serializers as auth_serializers
@@ -23,6 +23,8 @@ from drf_yasg.utils import swagger_auto_schema
 from authentication import service as auth_service
 from rest_framework.parsers import MultiPartParser
 from rest_framework.decorators import parser_classes
+from rest_framework import generics
+from rest_framework import permissions
 
 
 RANDOM_STRING_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -298,4 +300,22 @@ class UpdateProfile(APIView):
             return Response({"status":400,"detail":str(e)},status = 400)
 
 
-        
+
+class AvtarView(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    queryset = LevelAvtar.objects.all()
+    serializer_class = auth_serializers.AvtarSerilizer
+
+    def get_queryset(self):
+        exp_level_avtar = self.request.user.ex_level.levelavtar_set.all()
+        return exp_level_avtar
+      
+
+   
+class AvtarDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    queryset = LevelAvtar.objects.all()
+    serializer_class = auth_serializers.AvtarSerilizer
+

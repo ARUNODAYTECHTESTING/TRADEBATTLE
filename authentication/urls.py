@@ -9,7 +9,9 @@ from .views import (
     LoginView,
     UsernameView,
     UpdateProfile,
-    ProfileView
+    ProfileView,
+    AvtarView,
+    AvtarDetailsView
     
 )
 
@@ -22,6 +24,8 @@ urlpatterns = [
     path("login/", LoginView.as_view()),
     path("username/", UsernameView.as_view()),
     path("profile/", ProfileView.as_view()),
-    path('update-profile/',UpdateProfile.as_view())
+    path('update-profile/',UpdateProfile.as_view()),
+    path('avtar/',AvtarView.as_view()),
+    path('avtar/<int:pk>/',AvtarDetailsView.as_view()),
     
 ]

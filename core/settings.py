@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "authentication",
     "learning",
     "wallet",
-    "avtar",
     "payment",
     'drf_yasg',
     'battles'
