@@ -6,6 +6,7 @@ BATTLE_STATUS_CHOICES = (
     ('live', 'Live'),
     ('upcoming', 'Upcoming'),
     ('completed', 'Completed'),
+    ('expired', 'Expired')
 )
 
 class MarketType(auth_models.TmeStampModel):
@@ -146,6 +147,7 @@ class LeagueBattle(auth_models.TmeStampModel):
     max_allowed_stocks = models.IntegerField()
     multiplier_options = models.JSONField()
     max_entries = models.IntegerField()
+    number_of_winners = models.IntegerField(null=True,blank=True)
     
     
     class Meta:

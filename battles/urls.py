@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from .views import *
 
 from rest_framework import routers
 
@@ -23,4 +24,6 @@ router.register(r'predict_battle_users', views.PredictBattleUserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('battle-details/<int:battle_id>/', BattleDetailsView.as_view(), name='battle-details'),
+    path('all_league_battles/', LeagueBattleListAll.as_view(), name='all_league_battles'),
 ]

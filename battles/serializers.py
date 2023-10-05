@@ -127,55 +127,6 @@ class SoloBattleUserSerializer(serializers.ModelSerializer):
         )
 
 
-class LeagueBattleSerializer(serializers.ModelSerializer):
-    """Serializer for the LeagueBattle model."""
-
-    class Meta:
-        model = LeagueBattle
-        fields = (
-            'id',
-            'name',
-            'market_type',
-            'category',
-            'battle_image',
-            'enrollment_start_time',
-            'enrollment_end_time',
-            'battle_start_time',
-            'battle_end_time',
-            'status',
-            'battle_recurrent_count',
-            'battle_frequency',
-            'trivia',
-            'coins_multiplier_constant',
-            'experience_points_multiplier_constant',
-            'max_winnings',
-            'max_participants',
-            'entry_fee',
-            'max_allowed_stocks',  
-            'multiplier_options', 
-            'max_entries', 
-        )
-
-
-class LeagueBattleUserSerializer(serializers.ModelSerializer):
-    """Serializer for the LeagueBattleUser model."""
-
-    class Meta:
-        model = LeagueBattleUser
-        fields = (
-            'id',
-            'user',
-            'battle',
-            'number_of_entries',
-            'submitted_time_and_answers',
-            'enrollment_time',
-            'total_answer_duration',
-            'coins_earned',
-            'status',
-            'experience_points_earned',
-            'entry_fees_paid',
-        )
-
 
 class QuestionSetSerializer(serializers.ModelSerializer):
     """Serializer for the QuestionSet model."""
@@ -231,6 +182,59 @@ class PredictBattleUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PredictBattleUser
+        fields = (
+            'id',
+            'user',
+            'battle',
+            'number_of_entries',
+            'submitted_time_and_answers',
+            'enrollment_time',
+            'total_answer_duration',
+            'coins_earned',
+            'status',
+            'experience_points_earned',
+            'entry_fees_paid',
+        )
+        
+        
+        
+
+#League Battle
+class LeagueBattleSerializer(serializers.ModelSerializer):
+    """Serializer for the LeagueBattle model."""
+
+    class Meta:
+        model = LeagueBattle
+        fields = (
+            'id',
+            'name',
+            'market_type',
+            'category',
+            'battle_image',
+            'enrollment_start_time',
+            'enrollment_end_time',
+            'battle_start_time',
+            'battle_end_time',
+            'status',
+            'battle_recurrent_count',
+            'battle_frequency',
+            'trivia',
+            'coins_multiplier_constant',
+            'experience_points_multiplier_constant',
+            'max_winnings',
+            'max_participants',
+            'entry_fee',
+            'max_allowed_stocks',  
+            'multiplier_options', 
+            'max_entries', 
+        )
+
+
+class LeagueBattleUserSerializer(serializers.ModelSerializer):
+    """Serializer for the LeagueBattleUser model."""
+
+    class Meta:
+        model = LeagueBattleUser
         fields = (
             'id',
             'user',
