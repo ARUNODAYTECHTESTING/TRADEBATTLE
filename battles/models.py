@@ -1,4 +1,5 @@
 # models.py
+from django.utils import timezone
 from authentication import models as auth_models
 from django.db import models
 
@@ -150,9 +151,19 @@ class LeagueBattle(auth_models.TmeStampModel):
     number_of_winners = models.IntegerField(null=True,blank=True)
     
     
-    class Meta:
-        ordering = ("-created_at",)
+    def update_status(self):
+        current_time = timezone.now()
+        if current_time < self.enrollment_start_time:
+            self.status = 'upcoming'
+        elif self.enrollment_start_time <= current_time <= self.enrollment_end_time:
+            self.status = 'live'
+        elif self.battle_start_time <= current_time <= self.battle_end_time:
+            self.status = 'live'
+        elif current_time > self.battle_end_time:
+            self.status = 'completed'
 
+        self.save()
+    
     def __str__(self) -> str:
         return self.name
 
