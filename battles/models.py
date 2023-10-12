@@ -121,7 +121,7 @@ class SoloBattleUser(auth_models.TmeStampModel):
         ordering = ("-created_at",)
 
     def __str__(self) -> str:
-        return self.user
+        return self.battle
 
 
 
@@ -130,8 +130,8 @@ class LeagueBattle(auth_models.TmeStampModel):
     market_type = models.ForeignKey(MarketType, on_delete=models.CASCADE)
     category = models.ForeignKey(BattleCategory, on_delete=models.CASCADE)
     battle_image = models.ImageField(upload_to='LeagueBattle',default="battles/defaut.png")
-    enrollment_start_time = models.DateTimeField()
-    enrollment_end_time = models.DateTimeField()
+    enrollment_start_time = models.DateTimeField() #timezone
+    enrollment_end_time = models.DateTimeField(verbose_name='Enrollment End Time',help_text='Format: dd-mm-yyyy HH:MM:SS (24-hour)')
     battle_start_time = models.DateTimeField()
     battle_end_time = models.DateTimeField()
     status = models.CharField(
@@ -139,30 +139,18 @@ class LeagueBattle(auth_models.TmeStampModel):
     )
     battle_recurrent_count = models.IntegerField()
     battle_frequency = models.CharField(max_length=255)
-    trivia = models.TextField()
+    trivia = models.TextField(blank=True,null=True) #optional
     coins_multiplier_constant = models.FloatField()
     experience_points_multiplier_constant = models.FloatField()
-    max_winnings = models.FloatField()
+    max_winnings = models.FloatField() #integer
     max_participants = models.PositiveIntegerField(default=0)
     entry_fee = models.FloatField()
     max_allowed_stocks = models.IntegerField()
     multiplier_options = models.JSONField()
     max_entries = models.IntegerField()
     number_of_winners = models.IntegerField(null=True,blank=True)
-    
-    
-    def update_status(self):
-        current_time = timezone.now()
-        if current_time < self.enrollment_start_time:
-            self.status = 'upcoming'
-        elif self.enrollment_start_time <= current_time <= self.enrollment_end_time:
-            self.status = 'live'
-        elif self.battle_start_time <= current_time <= self.battle_end_time:
-            self.status = 'live'
-        elif current_time > self.battle_end_time:
-            self.status = 'completed'
-
-        self.save()
+    #completed battle count (how many times it ran)
+    completed_battle_count = models.IntegerField(default=0,blank=True,null=True)
     
     def __str__(self) -> str:
         return self.name
@@ -181,8 +169,7 @@ class LeagueBattleUser(auth_models.TmeStampModel):
     class Meta:
         ordering = ("-created_at",)
 
-    def __str__(self) -> str:
-        return self.battle
+
 
 class PredictBattle(auth_models.TmeStampModel):
     name = models.CharField(max_length=255)

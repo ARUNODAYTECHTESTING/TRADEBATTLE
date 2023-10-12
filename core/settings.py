@@ -242,3 +242,6 @@ SWAGGER_SETTINGS = {
 }
 
 FORCE_SCRIPT_NAME = "/"
+
+
+TIME_ZONE = 'Asia/Kolkata'

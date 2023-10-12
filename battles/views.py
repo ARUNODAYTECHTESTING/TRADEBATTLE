@@ -5,7 +5,9 @@ from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, Solo
 from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, QuestionSetSerializer, AnswersSerializer, PredictBattleSerializer, PredictBattleUserSerializer
 from django.views import View
 from django.http import JsonResponse
-
+from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.permissions import IsAuthenticated
 class MarketTypeViewSet(viewsets.ModelViewSet):
     """API endpoint for managing MarketTypes."""
 
@@ -91,7 +93,39 @@ class LeagueBattleUserViewSet(viewsets.ModelViewSet):
     queryset = LeagueBattleUser.objects.all()
     serializer_class = LeagueBattleUserSerializer
     
-class LeagueBattleListAll(View):
+class LeagueBattleMyBattles(APIView):
+    permission_classes = [IsAuthenticated]
+    @swagger_auto_schema(
+        responses={200: 'OK', 404: 'Not Found'},
+        operation_summary="Get a list of league battles",
+        operation_description="Retrieve a list of league battles with basic information.",
+    )
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        league_battles = LeagueBattle.objects.filter(leaguebattleuser__user=user)
+        battle_list = []
+
+        for battle in league_battles:
+            battle_info = {
+                'battle_image': battle.battle_image.url,
+                'name': battle.name,
+                'battle_start_time': battle.battle_start_time.isoformat(),
+                'battle_end_time': battle.battle_end_time.isoformat(),
+                'enrollment_start_time': battle.enrollment_start_time.isoformat(),
+                'enrollment_end_time': battle.enrollment_end_time.isoformat(),
+                'status':battle.status
+            }
+            battle_list.append(battle_info)
+
+        return JsonResponse({'league_battles': battle_list})
+    
+class LeagueBattleJoin(APIView):
+    @swagger_auto_schema(
+        responses={200: 'OK', 404: 'Not Found'},
+        operation_summary="Get a list of league battles",
+        operation_description="Retrieve a list of league battles with basic information.",
+    )
     def get(self, request, *args, **kwargs):
         league_battles = LeagueBattle.objects.all()
         battle_list = []
@@ -104,13 +138,18 @@ class LeagueBattleListAll(View):
                 'battle_end_time': battle.battle_end_time.isoformat(),
                 'enrollment_start_time': battle.enrollment_start_time.isoformat(),
                 'enrollment_end_time': battle.enrollment_end_time.isoformat(),
+                'status':battle.status
             }
             battle_list.append(battle_info)
 
         return JsonResponse({'league_battles': battle_list})
-    
 
-class BattleDetailsView(View):
+class BattleDetailsView(APIView):
+    @swagger_auto_schema(
+        responses={200: 'OK', 404: 'Not Found'},
+        operation_summary="Get details of a specific battle",
+        operation_description="Retrieve details of a specific battle, including start and end times, enrollment details, and statistics.",
+    )
     def get(self, request, *args, **kwargs):
         # Assuming you have battle_id in the URL parameters
         battle_id = self.kwargs.get('battle_id')
@@ -126,7 +165,7 @@ class BattleDetailsView(View):
 
         # Calculate winner percentage
         total_winners = LeagueBattleUser.objects.filter(battle=battle, coins_earned__gt=0).count()
-        winner_percentage = (total_winners / total_users) * 100 if total_users > 0 else 0
+        winner_percentage = (total_winners / total_users) * 100 if total_users > 0 else 0 #condition change fresh battle
 
         # Build the response
         response_data = {
@@ -141,3 +180,8 @@ class BattleDetailsView(View):
         }
 
         return JsonResponse(response_data)
+
+
+
+
+#join section
