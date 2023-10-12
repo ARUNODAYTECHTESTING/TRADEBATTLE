@@ -163,12 +163,14 @@ class LeagueBattleUser(auth_models.TmeStampModel):
     enrollment_time = models.DateTimeField()
     total_answer_duration = models.FloatField()
     coins_earned = models.FloatField()
-    status = models.CharField(max_length=255)
+    status = models.CharField(max_length=255) #choice_field
     experience_points_earned = models.CharField(max_length=250)
     entry_fees_paid = models.CharField(max_length=250)
     class Meta:
         ordering = ("-created_at",)
-
+        
+    # def __str__(self) -> str:
+    #     return self.user
 
 
 class PredictBattle(auth_models.TmeStampModel):
