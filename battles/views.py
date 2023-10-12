@@ -121,13 +121,16 @@ class LeagueBattleMyBattles(APIView):
         return JsonResponse({'league_battles': battle_list})
     
 class LeagueBattleJoin(APIView):
+    permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
         responses={200: 'OK', 404: 'Not Found'},
         operation_summary="Get a list of league battles",
         operation_description="Retrieve a list of league battles with basic information.",
     )
     def get(self, request, *args, **kwargs):
-        league_battles = LeagueBattle.objects.all()
+        user = request.user
+        user_joined_battles = LeagueBattleUser.objects.filter(user=user).values_list('battle_id', flat=True)
+        league_battles = LeagueBattle.objects.exclude(id__in=user_joined_battles)
         battle_list = []
 
         for battle in league_battles:
