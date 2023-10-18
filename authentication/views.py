@@ -36,7 +36,8 @@ class UserSendOtpAPI(APIView):
     @swagger_auto_schema(
         request_body=auth_serializers.UserSendOtpAPISerializer,  
         responses={200: "Success", 400: "Failed"},
-        operation_description="Send OTP to mobile number."
+        operation_description="Send OTP to mobile number.",
+        operation_summary="User Send OTP API",
     )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
@@ -82,7 +83,8 @@ class VerifyOtpView(APIView):
     @swagger_auto_schema(
         request_body=auth_serializers.VerifyOtpViewSerializer, 
         responses={200: "Success", 400: "Failed"},
-        operation_description="Verify OTP for mobile number."
+        operation_description="Verify OTP for mobile number.",
+        operation_summary="Verify OTP",
     )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
@@ -124,7 +126,8 @@ class ResendOtpVIew(APIView):
     @swagger_auto_schema(
         request_body=auth_serializers.ResendOtpViewSerializer, 
         responses={200: "Success", 400: "Failed"},
-        operation_description="Resend OTP to mobile number."
+        operation_description="Resend OTP to mobile number.",
+        operation_summary="Resend OTP API",
     )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
@@ -152,7 +155,8 @@ class SetPasswordView(APIView):
     @swagger_auto_schema(
         request_body=auth_serializers.SetPasswordViewSerializer,  
         responses={200: "Success", 400: "Failed"},
-        operation_description="Set a new password for the user."
+        operation_description="Set a new password for the user.",
+        operation_summary="Set password",
     )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
@@ -181,7 +185,8 @@ class LoginView(APIView):
     @swagger_auto_schema(
         request_body=auth_serializers.LoginViewSerializer,  
         responses={200: "Success", 400: "Failed"},
-        operation_description="User login with mobile number and password."
+        operation_description="User login with mobile number and password.",
+        operation_summary="Login User",
     )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
@@ -241,7 +246,8 @@ class UsernameView(APIView):
     @swagger_auto_schema(
         request_body=auth_serializers.UsernameViewSerializer,  
         responses={200: "Success", 400: "Failed"},
-        operation_description="Check and update username."
+        operation_description="Check and update username.",
+        operation_summary="update username",
     )
     def post(self, request):
         res_status = HTTP_400_BAD_REQUEST
@@ -286,7 +292,8 @@ class UpdateProfile(APIView):
     swagger_auto_schema(
         request_body=auth_serializers.UpdateProfileSerializer,  
         responses={200: "Success", 400: "Failed"},
-        operation_description="Update user profile."
+        operation_description="Update user profile.",
+        operation_summary="update profile",
     )
     def patch(self, request,*args,**kwargs):
         try:

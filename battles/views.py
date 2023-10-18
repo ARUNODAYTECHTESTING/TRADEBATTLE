@@ -8,96 +8,97 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
-class MarketTypeViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing MarketTypes."""
+from .stock_data import get_stock_data
+# class MarketTypeViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing MarketTypes."""
 
-    queryset = MarketType.objects.all()
-    serializer_class = MarketTypeSerializer
-
-
-class BattleCategoryViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing BattleCategories."""
-
-    queryset = BattleCategory.objects.all()
-    serializer_class = BattleCategorySerializer
+#     queryset = MarketType.objects.all()
+#     serializer_class = MarketTypeSerializer
 
 
-class TimeBattleViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing TimeBattles."""
+# class BattleCategoryViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing BattleCategories."""
 
-    queryset = TimeBattle.objects.all()
-    serializer_class = TimeBattleSerializer
-
-
-class TimeBattleUserViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing TimeBattleUsers."""
-
-    queryset = TimeBattleUser.objects.all()
-    serializer_class = TimeBattleUserSerializer
+#     queryset = BattleCategory.objects.all()
+#     serializer_class = BattleCategorySerializer
 
 
-class SoloBattleViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing SoloBattles."""
+# class TimeBattleViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing TimeBattles."""
 
-    queryset = SoloBattle.objects.all()
-    serializer_class = SoloBattleSerializer
-
-
-class SoloBattleUserViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing SoloBattleUsers."""
-
-    queryset = SoloBattleUser.objects.all()
-    serializer_class = SoloBattleUserSerializer
+#     queryset = TimeBattle.objects.all()
+#     serializer_class = TimeBattleSerializer
 
 
+# class TimeBattleUserViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing TimeBattleUsers."""
+
+#     queryset = TimeBattleUser.objects.all()
+#     serializer_class = TimeBattleUserSerializer
 
 
-class QuestionSetViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing QuestionSets."""
+# class SoloBattleViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing SoloBattles."""
 
-    queryset = QuestionSet.objects.all()
-    serializer_class = QuestionSetSerializer
-
-
-class AnswersViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing Answers."""
-
-    queryset = Answers.objects.all()
-    serializer_class = AnswersSerializer
+#     queryset = SoloBattle.objects.all()
+#     serializer_class = SoloBattleSerializer
 
 
-class PredictBattleViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing PredictBattles."""
+# class SoloBattleUserViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing SoloBattleUsers."""
 
-    queryset = PredictBattle.objects.all()
-    serializer_class = PredictBattleSerializer
+#     queryset = SoloBattleUser.objects.all()
+#     serializer_class = SoloBattleUserSerializer
+
+
+
+
+# class QuestionSetViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing QuestionSets."""
+
+#     queryset = QuestionSet.objects.all()
+#     serializer_class = QuestionSetSerializer
+
+
+# class AnswersViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing Answers."""
+
+#     queryset = Answers.objects.all()
+#     serializer_class = AnswersSerializer
+
+
+# class PredictBattleViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing PredictBattles."""
+
+#     queryset = PredictBattle.objects.all()
+#     serializer_class = PredictBattleSerializer
     
-class PredictBattleUserViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing PredictBattleUsers."""
+# class PredictBattleUserViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing PredictBattleUsers."""
 
-    queryset = PredictBattleUser.objects.all()
-    serializer_class = PredictBattleUserSerializer
+#     queryset = PredictBattleUser.objects.all()
+#     serializer_class = PredictBattleUserSerializer
     
     
-#League Battle
-class LeagueBattleViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing LeagueBattles."""
+# #League Battle
+# class LeagueBattleViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing LeagueBattles."""
 
-    queryset = LeagueBattle.objects.all()
-    serializer_class = LeagueBattleSerializer
+#     queryset = LeagueBattle.objects.all()
+#     serializer_class = LeagueBattleSerializer
 
 
-class LeagueBattleUserViewSet(viewsets.ModelViewSet):
-    """API endpoint for managing LeagueBattleUsers."""
+# class LeagueBattleUserViewSet(viewsets.ModelViewSet):
+#     """API endpoint for managing LeagueBattleUsers."""
 
-    queryset = LeagueBattleUser.objects.all()
-    serializer_class = LeagueBattleUserSerializer
+#     queryset = LeagueBattleUser.objects.all()
+#     serializer_class = LeagueBattleUserSerializer
     
 class LeagueBattleMyBattles(APIView):
     permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
         responses={200: 'OK', 404: 'Not Found'},
-        operation_summary="Get a list of league battles",
+        operation_summary="Get a list of league battles for My Battle section",
         operation_description="Retrieve a list of league battles with basic information.",
     )
     
@@ -124,7 +125,7 @@ class LeagueBattleJoin(APIView):
     permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
         responses={200: 'OK', 404: 'Not Found'},
-        operation_summary="Get a list of league battles",
+        operation_summary="Get a list of league battles for JOIN Section",
         operation_description="Retrieve a list of league battles with basic information.",
     )
     def get(self, request, *args, **kwargs):
@@ -148,29 +149,26 @@ class LeagueBattleJoin(APIView):
         return JsonResponse({'league_battles': battle_list})
 
 class BattleDetailsView(APIView):
+    permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
         responses={200: 'OK', 404: 'Not Found'},
         operation_summary="Get details of a specific battle",
         operation_description="Retrieve details of a specific battle, including start and end times, enrollment details, and statistics.",
     )
     def get(self, request, *args, **kwargs):
-        # Assuming you have battle_id in the URL parameters
         battle_id = self.kwargs.get('battle_id')
-        
         try:
             battle = LeagueBattle.objects.get(pk=battle_id)
         except LeagueBattle.DoesNotExist:
             return JsonResponse({'error': 'Battle not found'}, status=404)
 
-        # Calculate number of spots left
         total_users = LeagueBattleUser.objects.filter(battle=battle).count()
         spots_left = battle.max_participants - total_users
 
-        # Calculate winner percentage
         total_winners = LeagueBattleUser.objects.filter(battle=battle, coins_earned__gt=0).count()
-        winner_percentage = (total_winners / total_users) * 100 if total_users > 0 else 0 #condition change fresh battle
+        winner_percentage = (total_winners / total_users) * 100 if total_users > 0 else "fresh battle" #condition change fresh battle
+        stock_data = get_stock_data()
 
-        # Build the response
         response_data = {
             'Category': battle.category.name,
             'Battle name': battle.name,
