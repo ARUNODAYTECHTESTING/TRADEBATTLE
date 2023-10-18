@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
+
+from battles.stock_percent import calculate_stock_percentage_with_amount
 from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle, QuestionSet, Answers
 from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, QuestionSetSerializer, AnswersSerializer, PredictBattleSerializer, PredictBattleUserSerializer
 from django.views import View
@@ -111,6 +113,7 @@ class LeagueBattleMyBattles(APIView):
             battle_info = {
                 'battle_image': battle.battle_image.url,
                 'name': battle.name,
+                'max_winnings': battle.max_winnings,
                 'battle_start_time': battle.battle_start_time.isoformat(),
                 'battle_end_time': battle.battle_end_time.isoformat(),
                 'enrollment_start_time': battle.enrollment_start_time.isoformat(),
@@ -133,16 +136,25 @@ class LeagueBattleJoin(APIView):
         user_joined_battles = LeagueBattleUser.objects.filter(user=user).values_list('battle_id', flat=True)
         league_battles = LeagueBattle.objects.exclude(id__in=user_joined_battles)
         battle_list = []
+       
 
         for battle in league_battles:
+            total_users = LeagueBattleUser.objects.filter(battle=battle).count()
+            spots_left = battle.max_participants - total_users
+            total_winners = LeagueBattleUser.objects.filter(battle=battle, coins_earned__gt=0).count()
+            winner_percentage = (total_winners / total_users) * 100 if total_users > 0 else "fresh battle"
             battle_info = {
                 'battle_image': battle.battle_image.url,
                 'name': battle.name,
+                'max_winnings': battle.max_winnings,
                 'battle_start_time': battle.battle_start_time.isoformat(),
                 'battle_end_time': battle.battle_end_time.isoformat(),
                 'enrollment_start_time': battle.enrollment_start_time.isoformat(),
                 'enrollment_end_time': battle.enrollment_end_time.isoformat(),
-                'status':battle.status
+                'status':battle.status,
+                'Number of spots left': spots_left,
+                'winner_percentage': winner_percentage,
+                'entry_fee':battle.entry_fee
             }
             battle_list.append(battle_info)
 
@@ -163,26 +175,26 @@ class BattleDetailsView(APIView):
             return JsonResponse({'error': 'Battle not found'}, status=404)
 
         total_users = LeagueBattleUser.objects.filter(battle=battle).count()
-        spots_left = battle.max_participants - total_users
-
-        total_winners = LeagueBattleUser.objects.filter(battle=battle, coins_earned__gt=0).count()
-        winner_percentage = (total_winners / total_users) * 100 if total_users > 0 else "fresh battle" #condition change fresh battle
+        spots_left = battle.max_participants - total_users 
         stock_data = get_stock_data()
+        max_stocks = battle.max_allowed_stocks
+        percentages_with_amount = calculate_stock_percentage_with_amount(max_stocks)
+        print(percentages_with_amount)
+ 
 
         response_data = {
             'Category': battle.category.name,
             'Battle name': battle.name,
+            'max_winnings': battle.max_winnings,
             'Start time': battle.battle_start_time.isoformat(),
             'End time': battle.battle_end_time.isoformat(),
             'Enrollment start time': battle.enrollment_start_time.isoformat(),
             'Enrollment end time': battle.enrollment_end_time.isoformat(),
             'Number of spots left': spots_left,
-            'Winner %': winner_percentage,
+            'entry_fee':battle.entry_fee,
+            'max_entry' : battle.max_entries
         }
 
         return JsonResponse(response_data)
 
 
-
-
-#join section
