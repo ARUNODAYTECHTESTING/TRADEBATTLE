@@ -27,4 +27,6 @@ urlpatterns = [
     path('battle-details/<int:battle_id>/', BattleDetailsView.as_view(), name='battle-details'),
     path('all_league_battles/', LeagueBattleJoin.as_view(), name='all_league_battles'),
     path('my_battles/',LeagueBattleMyBattles.as_view(), name='my_battles'),
+    path('create_league_battle_user/', CreateLeagueBattleUser.as_view(), name='create_league_battle_user'),
+
 ]

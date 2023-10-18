@@ -9,8 +9,12 @@ from django.views import View
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework.permissions import IsAuthenticated
 from .stock_data import get_stock_data
+from django.utils import timezone
+from django.db import transaction
+from rest_framework import status
 # class MarketTypeViewSet(viewsets.ModelViewSet):
 #     """API endpoint for managing MarketTypes."""
 
@@ -192,9 +196,76 @@ class BattleDetailsView(APIView):
             'Enrollment end time': battle.enrollment_end_time.isoformat(),
             'Number of spots left': spots_left,
             'entry_fee':battle.entry_fee,
-            'max_entry' : battle.max_entries
+            'max_entry' : battle.max_entries,
+            'stock_winning_percentage':percentages_with_amount,
+            'stock_data':stock_data,
         }
 
         return JsonResponse(response_data)
 
 
+class CreateLeagueBattleUser(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'battle_id': openapi.Schema(type=openapi.TYPE_INTEGER),
+                'number_of_entries': openapi.Schema(type=openapi.TYPE_INTEGER),
+                'submitted_time_and_answers': openapi.Schema(type=openapi.TYPE_OBJECT),
+                'entry_fees_paid': openapi.Schema(type=openapi.TYPE_NUMBER),
+            },
+            required=['battle_id', 'number_of_entries', 'submitted_time_and_answers', 'entry_fees_paid'],
+        ),
+        responses={
+            201: openapi.Response(description='Success - LeagueBattleUser created successfully'),
+            400: openapi.Response(description='Bad Request - Invalid data or missing required fields'),
+        },
+        operation_summary="Create LeagueBattleUser",
+        operation_description="Create a new LeagueBattleUser with the specified information.",
+    )
+    def post(self, request, *args, **kwargs):
+        # Get user from request
+        user = request.user
+
+        # Your existing view logic here
+        data = request.data
+
+        # Validate required fields
+        required_fields = ['battle_id', 'number_of_entries', 'submitted_time_and_answers', 'entry_fees_paid']
+        if not all(field in data for field in required_fields):
+            return Response({'error': 'Missing required fields'}, status=status.HTTP_400_BAD_REQUEST)
+
+        battle_id = data['battle_id']
+        number_of_entries = int(data['number_of_entries'])
+        submitted_time_and_answers = data['submitted_time_and_answers']
+        entry_fees_paid = float(data['entry_fees_paid'])
+
+        # Check if the number of entries is valid
+        try:
+            battle = LeagueBattle.objects.get(id=battle_id)
+        except LeagueBattle.DoesNotExist:
+            return Response({'error': 'Invalid battle_id'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if number_of_entries > battle.max_entries:
+            return Response({'error': 'Number of entries exceeds the maximum allowed'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the entry fee is correct
+        if entry_fees_paid != (number_of_entries * battle.entry_fee):
+            return Response({'error': 'Incorrect entry fee amount'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Perform the transaction to create LeagueBattleUser
+        with transaction.atomic():
+            league_battle_user = LeagueBattleUser.objects.create(
+                user=user,
+                battle=battle,
+                number_of_entries=number_of_entries,
+                submitted_time_and_answers=submitted_time_and_answers,
+                enrollment_time=timezone.now(),
+                total_answer_duration=0,  # You may need to adjust this based on your requirements
+                coins_earned=0,  # You may need to adjust this based on your requirements
+                status='pending',  # You may need to adjust this based on your requirements
+                experience_points_earned=0,  # You may need to adjust this based on your requirements
+                entry_fees_paid=entry_fees_paid,
+            )
+
+        return Response({'success': 'LeagueBattleUser created successfully'}, status=status.HTTP_201_CREATED)
