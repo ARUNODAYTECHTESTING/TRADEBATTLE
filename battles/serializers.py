@@ -83,29 +83,7 @@ class SoloBattleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SoloBattle
-        fields = (
-            'id',
-            'name',
-            'market_type',
-            'category',
-            'battle_image',
-            'enrollment_start_time',
-            'enrollment_end_time',
-            'battle_start_time',
-            'battle_end_time',
-            'status',
-            'battle_recurrent_count',
-            'battle_frequency',
-            'trivia',
-            'coins_multiplier_constant',
-            'experience_points_multiplier_constant',
-            'max_winnings',
-            'max_participants',
-            'entry_fee',
-            'questions_set',
-            'max_allowed_stocks',  
-            'multiplier_options',  
-        )
+        fields = "__all__"
 
 
 class SoloBattleUserSerializer(serializers.ModelSerializer):

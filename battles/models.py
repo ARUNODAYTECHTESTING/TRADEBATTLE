@@ -98,7 +98,7 @@ class SoloBattle(auth_models.TmeStampModel):
     entry_fee = models.FloatField()
     max_allowed_stocks = models.IntegerField()
     multiplier_options = models.JSONField()
-    questions_set = models.ForeignKey('QuestionSet',on_delete=models.CASCADE)
+    questions_set = models.JSONField()
     max_entries = models.IntegerField()
     
     class Meta:

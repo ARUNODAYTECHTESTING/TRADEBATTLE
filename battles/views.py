@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
 from .stock_data import get_stock_data
+from rest_framework import generics
 # class MarketTypeViewSet(viewsets.ModelViewSet):
 #     """API endpoint for managing MarketTypes."""
 
@@ -198,3 +199,20 @@ class BattleDetailsView(APIView):
         return JsonResponse(response_data)
 
 
+# TODO: Solo battle api's view
+
+class SoloBattleQuerysetSerializerClassMixin:
+    serializer_class = SoloBattleSerializer
+    queryset = SoloBattle.objects.all()
+
+class SoloBattleView(SoloBattleQuerysetSerializerClassMixin,generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
+
+class SoloBattleDetailsView(SoloBattleQuerysetSerializerClassMixin,generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+    

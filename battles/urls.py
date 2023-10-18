@@ -27,4 +27,8 @@ urlpatterns = [
     path('battle-details/<int:battle_id>/', BattleDetailsView.as_view(), name='battle-details'),
     path('all_league_battles/', LeagueBattleJoin.as_view(), name='all_league_battles'),
     path('my_battles/',LeagueBattleMyBattles.as_view(), name='my_battles'),
+    # TODO: Solo battle api's urls
+    path('solo-battles/',views.SoloBattleView.as_view(), name='solo_battles'),
+    path('solo-battles/<int:pk>/',views.SoloBattleDetailsView.as_view(), name='solo_battles_detail'),
+
 ]
