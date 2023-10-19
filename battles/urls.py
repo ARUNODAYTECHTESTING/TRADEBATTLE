@@ -30,5 +30,9 @@ urlpatterns = [
     # TODO: Solo battle api's urls
     path('solo-battles/',views.SoloBattleView.as_view(), name='solo_battles'),
     path('solo-battles/<int:pk>/',views.SoloBattleDetailsView.as_view(), name='solo_battles_detail'),
+    # TODO: QuestionBase url's
+    path('questions/',views.QuestionBaseView.as_view(), name='questions'),
+    path('questions/<int:pk>/',views.QuestionBaseDetailsView.as_view(), name='questions_details'),
+
 
 ]

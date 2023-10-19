@@ -10,8 +10,8 @@ from .models import (
     LeagueBattleUser,
     PredictBattle,
     PredictBattleUser,
-    QuestionSet,
-    Answers,
+    QuestionsBase
+  
 )
 
 class MarketTypeSerializer(serializers.ModelSerializer):
@@ -106,24 +106,6 @@ class SoloBattleUserSerializer(serializers.ModelSerializer):
 
 
 
-class QuestionSetSerializer(serializers.ModelSerializer):
-    """Serializer for the QuestionSet model."""
-
-    class Meta:
-        model = QuestionSet
-        fields = (
-            'id',
-            'name',
-            'questions',
-        )
-
-
-class AnswersSerializer(serializers.ModelSerializer):
-    """Serializer for the Answers model."""
-
-    class Meta:
-        model = Answers
-        fields = ('option',)
 
 class PredictBattleSerializer(serializers.ModelSerializer):
     """Serializer for the PredictBattle model."""
@@ -226,3 +208,10 @@ class LeagueBattleUserSerializer(serializers.ModelSerializer):
             'experience_points_earned',
             'entry_fees_paid',
         )
+
+# TODO: QuestionBase serializer
+class QuestionBaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = QuestionsBase
+        fields = "__all__"

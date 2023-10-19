@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from battles.stock_percent import calculate_stock_percentage_with_amount
-from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle, QuestionSet, Answers
-from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, QuestionSetSerializer, AnswersSerializer, PredictBattleSerializer, PredictBattleUserSerializer
+from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle,QuestionsBase
+from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, PredictBattleSerializer, PredictBattleUserSerializer,QuestionBaseSerializer
 from django.views import View
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -216,3 +216,17 @@ class SoloBattleDetailsView(SoloBattleQuerysetSerializerClassMixin,generics.Retr
     permission_classes = [IsAuthenticated]
     lookup_field = "pk"
     
+
+# TODO: Question api's
+class QuestionBaseQuerysetSerializerClassMixin:
+    serializer_class = QuestionBaseSerializer
+    queryset = QuestionsBase.objects.all()
+
+class QuestionBaseView(QuestionBaseQuerysetSerializerClassMixin,generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    
+class QuestionBaseDetailsView(QuestionBaseQuerysetSerializerClassMixin,generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+
