@@ -2,6 +2,7 @@
 from django.utils import timezone
 from authentication import models as auth_models
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 BATTLE_STATUS_CHOICES = (
     ('live', 'Live'),
@@ -99,7 +100,7 @@ class SoloBattle(auth_models.TmeStampModel):
     entry_fee = models.FloatField()
     max_allowed_stocks = models.IntegerField()
     multiplier_options = models.JSONField()
-    questions_set = models.JSONField()
+    questions_set = ArrayField(models.PositiveIntegerField(),null=True, blank=True)
     max_entries = models.IntegerField()
     
     class Meta:

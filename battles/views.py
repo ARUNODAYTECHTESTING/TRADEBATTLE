@@ -12,6 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
 from .stock_data import get_stock_data
 from rest_framework import generics
+from battles import service as battle_service
 # class MarketTypeViewSet(viewsets.ModelViewSet):
 #     """API endpoint for managing MarketTypes."""
 
@@ -209,8 +210,9 @@ class SoloBattleView(SoloBattleQuerysetSerializerClassMixin,generics.ListCreateA
     permission_classes = [IsAuthenticated]
 
 
-    def perform_create(self, serializer):
-        return super().perform_create(serializer)
+    def post(self, request,*args,**kwargs):
+        status, data = battle_service.SoloBattleService.validate_solo_battle_request(request.data)
+        return Response({"status":status,"data":data},status = status)
 
 class SoloBattleDetailsView(SoloBattleQuerysetSerializerClassMixin,generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]

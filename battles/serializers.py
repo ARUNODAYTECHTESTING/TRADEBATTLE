@@ -14,6 +14,8 @@ from .models import (
   
 )
 
+from battles import query as battle_query
+
 class MarketTypeSerializer(serializers.ModelSerializer):
     """Serializer for the MarketType model."""
 
@@ -84,6 +86,22 @@ class SoloBattleSerializer(serializers.ModelSerializer):
     class Meta:
         model = SoloBattle
         fields = "__all__"
+
+    def to_representation(self, instance):
+        super().to_representation(instance)
+        data = {}
+        data.update({
+            "id": instance.id,
+            "name": instance.name,
+            "battle_image": instance.battle_image.url,
+            "battle_start_time": instance.battle_start_time,
+            "battle_end_time": instance.battle_end_time,
+            "status": instance.status,
+            "entry_fee": instance.entry_fee,
+            "questions_set": QuestionBaseSerializer(battle_query.QuestionHandler.get_question_object_by_id(instance.questions_set[0])).data,  # Keep the existing questions_set data
+            "max_entries": instance.max_entries,
+        })
+        return data
 
 
 class SoloBattleUserSerializer(serializers.ModelSerializer):
@@ -215,3 +233,16 @@ class QuestionBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionsBase
         fields = "__all__"
+
+    def to_representation(self, instance):
+        super().to_representation(instance)
+        data = {}
+        data.update({
+            "id": instance.id,
+            "name": instance.name,
+            "options": instance.options,
+            "correct_answer": instance.correct_answer,
+            
+        })
+        return data
+    
