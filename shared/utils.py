@@ -18,3 +18,6 @@ class Conversion:
     @staticmethod
     def rupees_to_coin(rupees: int):
         return 10 * int(rupees)
+
+
+# TODO: Common logic comes here

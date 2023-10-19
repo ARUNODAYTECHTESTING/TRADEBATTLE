@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from battles.stock_percent import calculate_stock_percentage_with_amount
-from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle, QuestionSet, Answers
-from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, QuestionSetSerializer, AnswersSerializer, PredictBattleSerializer, PredictBattleUserSerializer
+from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle,QuestionsBase
+from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, PredictBattleSerializer, PredictBattleUserSerializer,QuestionBaseSerializer
 from django.views import View
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -15,6 +15,8 @@ from .stock_data import get_stock_data
 from django.utils import timezone
 from django.db import transaction
 from rest_framework import status
+from rest_framework import generics
+from battles import service as battle_service
 # class MarketTypeViewSet(viewsets.ModelViewSet):
 #     """API endpoint for managing MarketTypes."""
 
@@ -266,3 +268,35 @@ class CreateLeagueBattleUser(APIView):
             )
 
         return Response({'success': 'LeagueBattleUser created successfully'}, status=status.HTTP_201_CREATED)
+# TODO: Solo battle api's view
+
+class SoloBattleQuerysetSerializerClassMixin:
+    serializer_class = SoloBattleSerializer
+    queryset = SoloBattle.objects.all()
+
+class SoloBattleView(SoloBattleQuerysetSerializerClassMixin,generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+
+    def post(self, request,*args,**kwargs):
+        status, data = battle_service.SoloBattleService.validate_solo_battle_request(request.data)
+        return Response({"status":status,"data":data},status = status)
+
+class SoloBattleDetailsView(SoloBattleQuerysetSerializerClassMixin,generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+    
+
+# TODO: Question api's
+class QuestionBaseQuerysetSerializerClassMixin:
+    serializer_class = QuestionBaseSerializer
+    queryset = QuestionsBase.objects.all()
+
+class QuestionBaseView(QuestionBaseQuerysetSerializerClassMixin,generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    
+class QuestionBaseDetailsView(QuestionBaseQuerysetSerializerClassMixin,generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+

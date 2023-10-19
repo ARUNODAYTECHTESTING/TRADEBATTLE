@@ -28,5 +28,12 @@ urlpatterns = [
     path('all_league_battles/', LeagueBattleJoin.as_view(), name='all_league_battles'),
     path('my_battles/',LeagueBattleMyBattles.as_view(), name='my_battles'),
     path('create_league_battle_user/', CreateLeagueBattleUser.as_view(), name='create_league_battle_user'),
+    # TODO: Solo battle api's urls
+    path('solo-battles/',views.SoloBattleView.as_view(), name='solo_battles'),
+    path('solo-battles/<int:pk>/',views.SoloBattleDetailsView.as_view(), name='solo_battles_detail'),
+    # TODO: QuestionBase url's
+    path('questions/',views.QuestionBaseView.as_view(), name='questions'),
+    path('questions/<int:pk>/',views.QuestionBaseDetailsView.as_view(), name='questions_details'),
+
 
 ]

@@ -10,9 +10,11 @@ from .models import (
     LeagueBattleUser,
     PredictBattle,
     PredictBattleUser,
-    QuestionSet,
-    Answers,
+    QuestionsBase
+  
 )
+
+from battles import query as battle_query
 
 class MarketTypeSerializer(serializers.ModelSerializer):
     """Serializer for the MarketType model."""
@@ -83,29 +85,23 @@ class SoloBattleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SoloBattle
-        fields = (
-            'id',
-            'name',
-            'market_type',
-            'category',
-            'battle_image',
-            'enrollment_start_time',
-            'enrollment_end_time',
-            'battle_start_time',
-            'battle_end_time',
-            'status',
-            'battle_recurrent_count',
-            'battle_frequency',
-            'trivia',
-            'coins_multiplier_constant',
-            'experience_points_multiplier_constant',
-            'max_winnings',
-            'max_participants',
-            'entry_fee',
-            'questions_set',
-            'max_allowed_stocks',  
-            'multiplier_options',  
-        )
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        super().to_representation(instance)
+        data = {}
+        data.update({
+            "id": instance.id,
+            "name": instance.name,
+            "battle_image": instance.battle_image.url,
+            "battle_start_time": instance.battle_start_time,
+            "battle_end_time": instance.battle_end_time,
+            "status": instance.status,
+            "entry_fee": instance.entry_fee,
+            "questions_set": QuestionBaseSerializer(battle_query.QuestionHandler.get_question_object_by_id(instance.questions_set[0])).data,  # Keep the existing questions_set data
+            "max_entries": instance.max_entries,
+        })
+        return data
 
 
 class SoloBattleUserSerializer(serializers.ModelSerializer):
@@ -128,24 +124,6 @@ class SoloBattleUserSerializer(serializers.ModelSerializer):
 
 
 
-class QuestionSetSerializer(serializers.ModelSerializer):
-    """Serializer for the QuestionSet model."""
-
-    class Meta:
-        model = QuestionSet
-        fields = (
-            'id',
-            'name',
-            'questions',
-        )
-
-
-class AnswersSerializer(serializers.ModelSerializer):
-    """Serializer for the Answers model."""
-
-    class Meta:
-        model = Answers
-        fields = ('option',)
 
 class PredictBattleSerializer(serializers.ModelSerializer):
     """Serializer for the PredictBattle model."""
@@ -248,3 +226,23 @@ class LeagueBattleUserSerializer(serializers.ModelSerializer):
             'experience_points_earned',
             'entry_fees_paid',
         )
+
+# TODO: QuestionBase serializer
+class QuestionBaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = QuestionsBase
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        super().to_representation(instance)
+        data = {}
+        data.update({
+            "id": instance.id,
+            "name": instance.name,
+            "options": instance.options,
+            "correct_answer": instance.correct_answer,
+            
+        })
+        return data
+    

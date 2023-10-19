@@ -2,6 +2,7 @@
 from django.utils import timezone
 from authentication import models as auth_models
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 BATTLE_STATUS_CHOICES = (
     ('live', 'Live'),
@@ -49,7 +50,7 @@ class TimeBattle(auth_models.TmeStampModel):
     max_winnings = models.FloatField()
     max_participants = models.PositiveIntegerField(default=0)
     entry_fee = models.FloatField()
-    questions_set = models.ForeignKey('QuestionSet',on_delete=models.CASCADE)
+
     class Meta:
         ordering = ("-created_at",)
 
@@ -67,7 +68,7 @@ class TimeBattleUser(auth_models.TmeStampModel):
     coins_earned = models.FloatField()
     experience_points_earned = models.CharField(max_length=250)
     entry_fees_paid = models.CharField(max_length=250)
-    questions_set = models.ForeignKey('QuestionSet',on_delete=models.CASCADE)
+
     class Meta:
         ordering = ("-created_at",)
 
@@ -90,6 +91,7 @@ class SoloBattle(auth_models.TmeStampModel):
     )
     battle_recurrent_count = models.IntegerField()
     battle_frequency = models.CharField(max_length=255)
+    completed_battle_count = models.PositiveBigIntegerField(default=0)
     trivia = models.TextField()
     coins_multiplier_constant = models.FloatField()
     experience_points_multiplier_constant = models.FloatField()
@@ -98,7 +100,7 @@ class SoloBattle(auth_models.TmeStampModel):
     entry_fee = models.FloatField()
     max_allowed_stocks = models.IntegerField()
     multiplier_options = models.JSONField()
-    questions_set = models.ForeignKey('QuestionSet',on_delete=models.CASCADE)
+    questions_set = ArrayField(models.PositiveIntegerField(),null=True, blank=True)
     max_entries = models.IntegerField()
     
     class Meta:
@@ -196,7 +198,7 @@ class PredictBattle(auth_models.TmeStampModel):
     max_allowed_stocks = models.IntegerField()
     multiplier_options = models.JSONField()
     max_entries = models.IntegerField()
-    questions_set = models.ForeignKey('QuestionSet',on_delete=models.CASCADE)
+
     
     
     class Meta:
@@ -222,20 +224,16 @@ class PredictBattleUser(auth_models.TmeStampModel):
     def __str__(self) -> str:
         return self.user
 
-class QuestionSet(auth_models.TmeStampModel):
-    name = models.CharField(max_length=255)
-    questions = models.JSONField()
-    answer = models.ManyToManyField('Answers')
+
+# TODO: Question tables
+class QuestionsBase(auth_models.TmeStampModel):
+    name = models.CharField(max_length=64)
+    options = models.JSONField()
+    correct_answer = models.CharField(max_length=124)
+
+
     class Meta:
         ordering = ("-created_at",)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
-
-class Answers(auth_models.TmeStampModel):
-    option = models.CharField(max_length=150)
-    class Meta:
-        ordering = ("-created_at",)
-
-    def __str__(self) -> str:
-        return self.option
