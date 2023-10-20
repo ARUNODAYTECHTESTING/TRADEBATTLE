@@ -1,5 +1,7 @@
 from battles import query as battle_query
-
+from django.http import HttpRequest
+from battles import serializers as battle_serializers
+from shared import utils
 class SoloBattleService:
     def __init__(self):
         pass
@@ -36,3 +38,31 @@ class QuestionService:
 
     def calculates_question_votes_percent():
         pass
+
+
+class SoloBattleUserService:
+
+    @staticmethod
+    def validate_solo_battle_User_request(request: HttpRequest):
+        try:
+            # TODO: Validate request body
+            serializer = battle_serializers.SoloBattleUserQuestionAnswerSerializer(data = request.data)
+            if not serializer.is_valid():
+                return 400, serializer.errors
+            battle_obj = battle_query.SoloBattleHandler.get_solo_battle_object_by_id(serializer.data['battle'])
+            if battle_obj is None:
+                return 400, f"Battle not found associated with id '{serializer.data['battle']}'"
+            
+            elif not battle_query.SoloBattleHandler.validate_max_entries(battle_obj,serializer.data['number_of_entries']):
+                return 400, f"Entry can't be allowed more than {battle_obj.max_entries}"
+            elif not battle_query.SoloBattleHandler.validate_enrollment(battle_obj,utils.DateTimeConversion.str_datetime_into_datetime_obj(serializer.data['enrollment_time'])):
+                return 400, f"Entrollment time expired. at {battle_obj.enrollment_end_time}"
+            
+            elif not battle_query.SoloBattleHandler.validate_entry_fees(battle_obj,serializer.data['entry_fees_paid'],serializer.data['number_of_entries']):
+                return 400, f"Insufficient entry fees paid"
+            
+            serializer.save(battle = battle_obj,user = request.user)
+            return 200, f"Question answer created successfully"
+        
+        except Exception as e:
+            return 400, e

@@ -104,23 +104,12 @@ class SoloBattleSerializer(serializers.ModelSerializer):
         return data
 
 
-class SoloBattleUserSerializer(serializers.ModelSerializer):
+class SoloBattleUserQuestionAnswerSerializer(serializers.ModelSerializer):
     """Serializer for the SoloBattleUser model."""
 
     class Meta:
         model = SoloBattleUser
-        fields = (
-            'id',
-            'user',
-            'battle',
-            'number_of_entries',
-            'submitted_time_and_answers',
-            'enrollment_time',
-            'status',
-            'coins_earned',
-            'experience_points_earned',
-            'entry_fees_paid',
-        )
+        fields = "__all__"
 
 
 

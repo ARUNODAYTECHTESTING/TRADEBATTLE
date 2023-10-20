@@ -34,6 +34,7 @@ urlpatterns = [
     # TODO: QuestionBase url's
     path('questions/',views.QuestionBaseView.as_view(), name='questions'),
     path('questions/<int:pk>/',views.QuestionBaseDetailsView.as_view(), name='questions_details'),
+    path('solo-battle-user-question-answer/',views.SoloBattleUserQuestionAnswerView.as_view(), name='solo_battle_user_question_answer')
 
 
 ]

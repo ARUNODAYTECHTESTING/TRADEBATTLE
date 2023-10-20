@@ -108,6 +108,8 @@ class SoloBattle(auth_models.TmeStampModel):
 
     def __str__(self) -> str:
         return self.name
+    
+
 
 class SoloBattleUser(auth_models.TmeStampModel):
     user = models.ForeignKey('authentication.User', on_delete=models.CASCADE,db_index=True,related_name='solo_battle_users')

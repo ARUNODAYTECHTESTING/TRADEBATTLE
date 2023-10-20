@@ -1,5 +1,6 @@
 from battles import models as battle_models
-
+from datetime import datetime
+from shared import utils
 class MarketTypeHandler:
 
     @classmethod
@@ -15,7 +16,7 @@ class SoloBattleHandler:
 
     @classmethod
     def get_solo_battle_object_by_id(cls,id: int) -> battle_models.SoloBattle:
-        pass
+        return battle_models.SoloBattle.objects.filter(id = id).first()
 
     @classmethod
     def validate_battle_start_end_time(cls,start_time,end_time):
@@ -38,8 +39,10 @@ class SoloBattleHandler:
         pass
 
     @classmethod
-    def validate_max_entries(cls):
-        pass
+    def validate_max_entries(cls,battle_obj:battle_models.SoloBattle,number_of_entries: int) -> bool:
+        if not battle_obj.max_entries >= number_of_entries:
+            return False
+        return True
 
     @classmethod
     def check_battle_recurrent_count_with_battle_complete_count(cls):
@@ -48,6 +51,18 @@ class SoloBattleHandler:
     @classmethod
     def create_solo_battle(cls,payload: dict) -> None:  
         battle_models.SoloBattle.objects.create(**payload)
+
+    @classmethod
+    def validate_enrollment(cls,battle_obj:battle_models.SoloBattle,enrollment_time: datetime) -> bool:
+        if not battle_obj.battle_end_time >= enrollment_time:
+            return False
+        return True
+    
+    @classmethod
+    def validate_entry_fees(cls,battle_obj:battle_models.SoloBattle,entry_fees_paid: int,number_of_entries: int):
+        if not battle_obj.entry_fee * int(number_of_entries) == int(entry_fees_paid):
+            return False
+        return True
 
 class QuestionHandler:
     def __init__(self):

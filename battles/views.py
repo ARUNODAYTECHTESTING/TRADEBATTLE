@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from battles.stock_percent import calculate_stock_percentage_with_amount
 from .models import MarketType, BattleCategory, TimeBattle, TimeBattleUser, SoloBattle, SoloBattleUser, LeagueBattle, LeagueBattleUser,PredictBattleUser,PredictBattle,QuestionsBase
-from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, PredictBattleSerializer, PredictBattleUserSerializer,QuestionBaseSerializer
+from .serializers import MarketTypeSerializer, BattleCategorySerializer, TimeBattleSerializer, TimeBattleUserSerializer, SoloBattleSerializer, SoloBattleUserQuestionAnswerSerializer, LeagueBattleSerializer, LeagueBattleUserSerializer, PredictBattleSerializer, PredictBattleUserSerializer,QuestionBaseSerializer
 from django.views import View
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -300,3 +300,10 @@ class QuestionBaseDetailsView(QuestionBaseQuerysetSerializerClassMixin,generics.
     permission_classes = [IsAuthenticated]
     lookup_field = "pk"
 
+class SoloBattleUserQuestionAnswerView(APIView):
+    # TODO: Will Store enduser submitted question answer along with it's points/xp
+    permission_classes = [IsAuthenticated]
+    @swagger_auto_schema(request_body=SoloBattleUserQuestionAnswerSerializer)
+    def post(self,request,*args,**kwargs):
+        status,data = battle_service.SoloBattleUserService.validate_solo_battle_User_request(request)
+        return Response({"status":status, "data":data},status=status)
