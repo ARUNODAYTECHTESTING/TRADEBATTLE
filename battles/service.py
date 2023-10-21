@@ -49,18 +49,18 @@ class SoloBattleUserService:
             serializer = battle_serializers.SoloBattleUserQuestionAnswerSerializer(data = request.data)
             if not serializer.is_valid():
                 return 400, serializer.errors
-            battle_obj = battle_query.SoloBattleHandler.get_solo_battle_object_by_id(serializer.data['battle'])
+            battle_obj = serializer.validated_data['battle']
             if battle_obj is None:
-                return 400, f"Battle not found associated with id '{serializer.data['battle']}'"
-            
-            elif not battle_query.SoloBattleHandler.validate_max_entries(battle_obj,serializer.data['number_of_entries']):
+                return 400, f"Battle not found associated with id '{serializer.validated_data['battle']}'"
+            elif not battle_query.SoloBattleHandler.validate_max_entries(battle_obj,serializer.validated_data['number_of_entries']):
                 return 400, f"Entry can't be allowed more than {battle_obj.max_entries}"
-            elif not battle_query.SoloBattleHandler.validate_enrollment(battle_obj,utils.DateTimeConversion.str_datetime_into_datetime_obj(serializer.data['enrollment_time'])):
+            elif not battle_query.SoloBattleHandler.validate_enrollment(battle_obj,serializer.validated_data['enrollment_time']):
                 return 400, f"Entrollment time expired. at {battle_obj.enrollment_end_time}"
             
-            elif not battle_query.SoloBattleHandler.validate_entry_fees(battle_obj,serializer.data['entry_fees_paid'],serializer.data['number_of_entries']):
+            elif not battle_query.SoloBattleHandler.validate_entry_fees(battle_obj,serializer.validated_data['entry_fees_paid'],serializer.validated_data['number_of_entries']):
                 return 400, f"Insufficient entry fees paid"
-            
+            elif battle_query.SoloBattleHandler.prevent_to_enroll_while_battle_live(battle_obj):
+                return 400, f"Enrolled can't be processed because it's live {battle_obj.status}"
             serializer.save(battle = battle_obj,user = request.user)
             return 200, f"Question answer created successfully"
         

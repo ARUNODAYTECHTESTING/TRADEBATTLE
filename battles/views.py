@@ -307,3 +307,9 @@ class SoloBattleUserQuestionAnswerView(APIView):
     def post(self,request,*args,**kwargs):
         status,data = battle_service.SoloBattleUserService.validate_solo_battle_User_request(request)
         return Response({"status":status, "data":data},status=status)
+
+class SoloBattleUserQuestionAnswerDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SoloBattleUser.objects.all()
+    serializer_class = SoloBattleUserQuestionAnswerSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"

@@ -109,6 +109,8 @@ class SoloBattle(auth_models.TmeStampModel):
     def __str__(self) -> str:
         return self.name
     
+   
+    
 
 
 class SoloBattleUser(auth_models.TmeStampModel):

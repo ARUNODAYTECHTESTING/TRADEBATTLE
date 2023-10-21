@@ -54,7 +54,7 @@ class SoloBattleHandler:
 
     @classmethod
     def validate_enrollment(cls,battle_obj:battle_models.SoloBattle,enrollment_time: datetime) -> bool:
-        if not battle_obj.battle_end_time >= enrollment_time:
+        if not battle_obj.enrollment_end_time >= enrollment_time:
             return False
         return True
     
@@ -63,6 +63,11 @@ class SoloBattleHandler:
         if not battle_obj.entry_fee * int(number_of_entries) == int(entry_fees_paid):
             return False
         return True
+    @classmethod
+    def prevent_to_enroll_while_battle_live(cls,battle_obj:battle_models.SoloBattle):
+        if battle_obj.status in ["live","LIVE","Live"]:
+            return True
+        return False
 
 class QuestionHandler:
     def __init__(self):

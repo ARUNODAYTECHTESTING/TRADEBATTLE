@@ -22,5 +22,7 @@ class Conversion:
 
 # TODO: Common logic comes here
 class DateTimeConversion:
-    def str_datetime_into_datetime_obj(str_datetime: str) -> datetime:
-        return datetime.strptime(str_datetime,"%Y%m%d:%H:%M:%S").date()
+    
+    @staticmethod
+    def datetime_obj_into_str_datetime(datetime_obj):
+        return datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f')
