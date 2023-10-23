@@ -15,14 +15,13 @@ def calculate_stock_percentage_with_amount(max_stock):
         for entry_key, selected_stocks in entries:
             for stock in selected_stocks:
                 symbol = stock["symbol"]
-                amount = stock.get("amount", 1)  # Assuming default amount is 1 if not provided
+                amount = stock.get("amount", 1)  
                 stock_counter[symbol] += amount
 
-    # Step 4: Calculate percentage for each stock
     stock_percentages = {}
 
     for symbol, total_amount in stock_counter.items():
-        percentage = (total_amount / (total_users * max_stock)) * 100  # Assuming 10 is the maximum amount a user can select
+        percentage = (total_amount / (total_users * max_stock)) * 100 
         stock_percentages[symbol] = percentage
 
     return stock_percentages

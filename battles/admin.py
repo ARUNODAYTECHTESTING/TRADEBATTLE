@@ -4,9 +4,10 @@ from .models import *
 
 admin.site.register(MarketType)
 admin.site.register(BattleCategory)
-admin.site.register(TimeBattle)
-admin.site.register(TimeBattleUser)
+# admin.site.register(TimeBattle)
+# admin.site.register(TimeBattleUser)
 admin.site.register(SoloBattle)
 admin.site.register(SoloBattleUser)
 admin.site.register(LeagueBattle)
 admin.site.register(LeagueBattleUser)
+admin.site.register(StockData)

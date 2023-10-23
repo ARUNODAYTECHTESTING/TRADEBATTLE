@@ -241,3 +241,26 @@ class QuestionsBase(auth_models.TmeStampModel):
 
     def __str__(self):
         return self.name
+
+class StockData(auth_models.TmeStampModel):
+    symbol = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=255)
+    open_price = models.FloatField()
+    day_high = models.FloatField()
+    day_low = models.FloatField()
+    last_price = models.FloatField()
+    previous_close = models.FloatField()
+    change = models.FloatField()
+    p_change = models.FloatField()
+    year_high = models.FloatField()
+    year_low = models.FloatField()
+    total_traded_volume = models.BigIntegerField()
+    total_traded_value = models.FloatField()
+    last_update_time = models.DateTimeField()
+    per_change_365d = models.FloatField()
+    per_change_30d = models.FloatField()
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self):
+        return self.symbol

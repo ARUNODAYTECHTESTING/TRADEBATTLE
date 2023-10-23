@@ -182,7 +182,6 @@ class BattleDetailsView(APIView):
 
         total_users = LeagueBattleUser.objects.filter(battle=battle).count()
         spots_left = battle.max_participants - total_users 
-        stock_data = get_stock_data()
         max_stocks = battle.max_allowed_stocks
         percentages_with_amount = calculate_stock_percentage_with_amount(max_stocks)
         print(percentages_with_amount)
@@ -199,8 +198,7 @@ class BattleDetailsView(APIView):
             'Number of spots left': spots_left,
             'entry_fee':battle.entry_fee,
             'max_entry' : battle.max_entries,
-            'stock_winning_percentage':percentages_with_amount,
-            'stock_data':stock_data,
+            'stock_winning_percentage':percentages_with_amount
         }
 
         return JsonResponse(response_data)
