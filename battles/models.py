@@ -9,7 +9,7 @@ BATTLE_STATUS_CHOICES = (
     ('upcoming', 'Upcoming'),
     ('completed', 'Completed'),
     ('expired', 'Expired')
-)
+) 
 
 class MarketType(auth_models.TmeStampModel):
     name = models.CharField(max_length=255)
@@ -123,11 +123,13 @@ class SoloBattleUser(auth_models.TmeStampModel):
     coins_earned = models.FloatField()
     experience_points_earned = models.CharField(max_length=250)
     entry_fees_paid = models.CharField(max_length=250)
+    # TODO: Question
+    question = models.ForeignKey("QuestionsBase",related_name="solo_battle_user",on_delete=models.CASCADE,null=True,blank=True)
     class Meta:
         ordering = ("-created_at",)
 
     def __str__(self) -> str:
-        return self.battle
+        return self.battle.name
 
 
 

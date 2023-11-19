@@ -76,4 +76,9 @@ class QuestionHandler:
     @classmethod
     def get_question_object_by_id(cls, id) -> battle_models.QuestionsBase:
        return battle_models.QuestionsBase.objects.filter(id=id).first()
+
+class QuestionAnswerHandler:
+    @classmethod
+    def filter_answers_by_question(cls, question):
+        return battle_models.SoloBattleUser.objects.filter(question = question).values_list("submitted_time_and_answers")
     

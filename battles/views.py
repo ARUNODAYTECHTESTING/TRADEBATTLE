@@ -302,8 +302,8 @@ class SoloBattleUserQuestionAnswerView(APIView):
     # TODO: Will Store enduser submitted question answer along with it's points/xp
     permission_classes = [IsAuthenticated]
     @swagger_auto_schema(request_body=SoloBattleUserQuestionAnswerSerializer)
-    def post(self,request,*args,**kwargs):
-        status,data = battle_service.SoloBattleUserService.validate_solo_battle_User_request(request)
+    def post(self,request,question_id,*args,**kwargs):
+        status,data = battle_service.SoloBattleUserService.validate_solo_battle_User_request(request,question_id)
         return Response({"status":status, "data":data},status=status)
 
 class SoloBattleUserQuestionAnswerDetailsView(generics.RetrieveUpdateDestroyAPIView):

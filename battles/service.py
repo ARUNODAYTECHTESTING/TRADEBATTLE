@@ -43,7 +43,7 @@ class QuestionService:
 class SoloBattleUserService:
 
     @staticmethod
-    def validate_solo_battle_User_request(request: HttpRequest):
+    def validate_solo_battle_User_request(request: HttpRequest,question_id: int):
         try:
             # TODO: Validate request body
             serializer = battle_serializers.SoloBattleUserQuestionAnswerSerializer(data = request.data)
@@ -61,7 +61,16 @@ class SoloBattleUserService:
                 return 400, f"Insufficient entry fees paid"
             elif battle_query.SoloBattleHandler.prevent_to_enroll_while_battle_live(battle_obj):
                 return 400, f"Enrolled can't be processed because it's live {battle_obj.status}"
-            serializer.save(battle = battle_obj,user = request.user)
+            
+            # TODO: Get QuestionBase
+            question = battle_query.QuestionHandler.get_question_object_by_id(question_id)
+            # TODO: get user time
+            user_time = utils.Entry.get_user_time(serializer.validated_data['submitted_time_and_answers'])
+            # TODO: Get answers by question
+            answers = battle_query.QuestionAnswerHandler.filter_answers_by_question(question)
+            # average time 
+            averge_time = utils.Entry.find_average_time(answers)
+            serializer.save(battle = battle_obj,user = request.user,question = question)
             return 200, f"Question answer created successfully"
         
         except Exception as e:
