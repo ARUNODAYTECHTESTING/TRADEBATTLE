@@ -65,13 +65,18 @@ class SoloBattleUserService:
             # TODO: Get QuestionBase
             question = battle_query.QuestionHandler.get_question_object_by_id(question_id)
             # TODO: get user time
-            user_time = utils.Entry.get_user_time(serializer.validated_data['submitted_time_and_answers'])
+            user_time_taken_to_complete = utils.Entry.get_user_time(serializer.validated_data['submitted_time_and_answers'])
             # TODO: Get answers by question
             answers = battle_query.QuestionAnswerHandler.filter_answers_by_question(question)
-            # average time 
-            averge_time = utils.Entry.find_average_time(answers)
-            serializer.save(battle = battle_obj,user = request.user,question = question)
+            # TODO: average time 
+            averge_time_of_question = utils.Entry.find_average_time(answers)
+            # TODO: Total time
+            total_time = utils.Entry.calculate_total_time()
+            effective_time = utils.Entry.get_effective_time(user_time_taken_to_complete,averge_time_of_question)
+            coins_earned = utils.Entry.get_points_and_expreice_points(total_time,effective_time,battle_obj.coins_multiplier_constant)
+            exprience_coins_earned = utils.Entry.get_points_and_expreice_points(total_time,effective_time,battle_obj.experience_points_multiplier_constant)
+            serializer.save(battle = battle_obj,user = request.user,question = question,coins_earned = coins_earned,experience_points_earned = exprience_coins_earned)
             return 200, f"Question answer created successfully"
         
-        except Exception as e:
+        except Exception as e:  
             return 400, e
