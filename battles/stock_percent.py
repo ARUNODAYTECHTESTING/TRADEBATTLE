@@ -1,29 +1,42 @@
-from collections import defaultdict
+from django.db import transaction
+from .models import LeagueBattleUser, StockData
 
-from battles.models import LeagueBattleUser
+def update_stock_data_percentages():
+    try:
+        with transaction.atomic():
+            # Dictionary to store the count of users who selected each stock
+            stock_selection_count = set()
 
-def calculate_stock_percentage_with_amount(max_stock):
-    # Step 1: Retrieve all LeagueBattleUser instances
-    all_users = LeagueBattleUser.objects.all()
+            # Iterate through all LeagueBattleUser instances
+            for league_battle_user in LeagueBattleUser.objects.all():
+                # Iterate through entries in submitted_time_and_answers
+                for entry_key, entry_list in league_battle_user.submitted_time_and_answers.items():
+                    # Check if the user has already selected a stock in this entry
+                    entry_symbols = set()
 
-    # Step 2-3: Extract selected stocks and amounts, and count occurrences
-    stock_counter = defaultdict(float)
-    total_users = len(all_users)
+                    # Iterate through each entry in the list
+                    for entry in entry_list:
+                        # Iterate through each symbol and percentage in the entry
+                        for symbol, percent in entry.items():
+                            symbol = symbol.lower()
 
-    for user in all_users:
-        entries = user.submitted_time_and_answers.items()
-        for entry_key, selected_stocks in entries:
-            for stock in selected_stocks:
-                symbol = stock["symbol"]
-                amount = stock.get("amount", 1)  
-                stock_counter[symbol] += amount
+                            if percent and percent[:-1].replace('.', '').isdigit():
+                                percent = float(percent[:-1])
 
-    stock_percentages = {}
+                                # Check if the user has already selected this stock in this entry
+                                if symbol not in entry_symbols:
+                                    entry_symbols.add(symbol)
 
-    for symbol, total_amount in stock_counter.items():
-        percentage = (total_amount / (total_users * max_stock)) * 100 
-        stock_percentages[symbol] = percentage
+                                    # Update the count of users who selected each stock
+                                    stock_selection_count.add(symbol)
 
-    return stock_percentages
+                                    # Update the selected_percent field in StockData
+                                    stock_data = StockData.objects.filter(symbol__iexact=symbol).first()
+                                    if stock_data:
+                                        stock_data.selected_percent = len(stock_selection_count)
+                                        stock_data.save()
+
+    except Exception as e:
+        print(f"Error updating stock data percentages: {e}")
 
 

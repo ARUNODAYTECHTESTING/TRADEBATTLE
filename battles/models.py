@@ -4,6 +4,20 @@ from authentication import models as auth_models
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
+
+class QuestionsBase(auth_models.TmeStampModel):
+    name = models.CharField(max_length=64)
+    options = models.JSONField() #array
+    correct_answer = models.CharField(max_length=124)
+
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self):
+        return self.name
+    
+
 BATTLE_STATUS_CHOICES = (
     ('live', 'Live'),
     ('upcoming', 'Upcoming'),
@@ -44,12 +58,13 @@ class TimeBattle(auth_models.TmeStampModel):
     )
     battle_recurrent_count = models.IntegerField()
     battle_frequency = models.CharField(max_length=255)
-    trivia = models.TextField()
+    trivia = models.TextField(blank=True,null=True)
     coins_multiplier_constant = models.FloatField()
     experience_points_multiplier_constant = models.FloatField()
     max_winnings = models.FloatField()
     max_participants = models.PositiveIntegerField(default=0)
     entry_fee = models.FloatField()
+    questions_set = models.ManyToManyField(QuestionsBase)
 
     class Meta:
         ordering = ("-created_at",)
@@ -60,7 +75,7 @@ class TimeBattle(auth_models.TmeStampModel):
 
 class TimeBattleUser(auth_models.TmeStampModel):
     user = models.ForeignKey('authentication.User', on_delete=models.CASCADE,db_index=True,related_name='time_battle_users')
-    battle_id = models.ForeignKey(TimeBattle, on_delete=models.CASCADE)
+    battle = models.ForeignKey(TimeBattle, on_delete=models.CASCADE)
     submitted_time_and_answers = models.JSONField()
     total_answer_duration = models.FloatField()
     enrollment_time = models.DateTimeField()
@@ -68,12 +83,13 @@ class TimeBattleUser(auth_models.TmeStampModel):
     coins_earned = models.FloatField()
     experience_points_earned = models.CharField(max_length=250)
     entry_fees_paid = models.CharField(max_length=250)
+    questions_set = models.ManyToManyField(QuestionsBase)
 
     class Meta:
         ordering = ("-created_at",)
 
-    def __str__(self) -> str:
-        return self.user
+    # def __str__(self) -> str:
+    #     return self.user
 
 
 
@@ -225,22 +241,12 @@ class PredictBattleUser(auth_models.TmeStampModel):
     class Meta:
         ordering = ("-created_at",)
 
-    def __str__(self) -> str:
-        return self.user
+    # def __str__(self) -> str:
+    #     return self.user
 
 
 # TODO: Question tables
-class QuestionsBase(auth_models.TmeStampModel):
-    name = models.CharField(max_length=64)
-    options = models.JSONField()
-    correct_answer = models.CharField(max_length=124)
 
-
-    class Meta:
-        ordering = ("-created_at",)
-
-    def __str__(self):
-        return self.name
 
 class StockData(auth_models.TmeStampModel):
     symbol = models.CharField(max_length=255)
@@ -259,6 +265,7 @@ class StockData(auth_models.TmeStampModel):
     last_update_time = models.DateTimeField()
     per_change_365d = models.FloatField()
     per_change_30d = models.FloatField()
+    selected_percent = models.FloatField(blank=True,null=True)
     class Meta:
         ordering = ("-created_at",)
 
